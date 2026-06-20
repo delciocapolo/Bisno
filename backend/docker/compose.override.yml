@@ -1,0 +1,11 @@
+services:
+  app:
+    build:
+      context: ..
+      target: dev_dependencies
+    entrypoint: []
+    command: ["pnpm", "run", "dev"]
+    volumes:
+      - ../src:/usr/src/app/src
+      - ../package.json:/usr/src/app/package.json
+      - ../tsconfig.json:/usr/src/app/tsconfig.json

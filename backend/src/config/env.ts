@@ -1,4 +1,48 @@
-export const env = {
-  port: Number(process.env.PORT ?? 3000),
-  nodeEnv: process.env.NODE_ENV ?? 'development',
+import { IEnvironment } from "../shared/@types/environment.js";
+
+type IEnvironmentKeys = keyof IEnvironment;
+
+const envDefault: Partial<IEnvironment> = {
+  SERVER_PORT: process.env.SERVER_PORT || 3000,
+  SERVER_HOST: process.env.SERVER_HOST || "localhost",
+  NODE_ENV: (process.env.NODE_ENV as IEnvironment["NODE_ENV"]) ?? "development",
+  TIMEZONE: process.env.TIMEZONE ?? "Africa/Luanda",
+  RABBITMQ_URI: process.env.RABBITMQ_URI ?? "",
+  DB_NAME: process.env.DB_NAME ?? "bisno",
+  DB_DIALECT: process.env.DB_DIALECT ?? "postgres",
+  DB_PORT: process.env.DB_PORT ?? 5432,
+  DB_HOST: process.env.DB_HOST ?? "localhost",
+  DB_USER: process.env.DB_USER ?? "root",
+  DB_PASSWORD: process.env.DB_PASSWORD ?? "root",
 };
+
+function env(name: IEnvironmentKeys): string {
+  const value = envDefault[name] ?? process.env[name];
+
+  if (value === undefined || value === "" || value === null) {
+    throw new Error(`Environment variable "${name}" is not defined.`);
+  }
+
+  return String(value);
+}
+
+env.parseInt = (name: IEnvironmentKeys): number => {
+  const value = Number(env(name));
+
+  if (isNaN(value)) {
+    throw new Error(`Environment variable "${name}" is not a valid number.`);
+  }
+
+  return value;
+};
+
+env.optional = (name: IEnvironmentKeys): string | undefined => {
+  const value = envDefault[name] ?? process.env[name];
+  return value !== undefined ? String(value) : undefined;
+};
+
+env.bool = (name: IEnvironmentKeys): boolean => {
+  return env(name).toLowerCase() === "true";
+};
+
+export default env;

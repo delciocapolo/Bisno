@@ -1,37 +1,44 @@
 import 'dotenv/config';
-import express from 'express';
-import cors from 'cors';
-import helmet from 'helmet';
-import { GetUsersUseCase } from './application/use-cases/get-users.use-case.js';
-import { initSequelize } from './infra/sequelize/sequelize.js';
-import { setupSwagger } from './infra/swagger/setup.js';
-import { clerkAuth, requireClerkAuth } from './infra/auth/clerk.middleware.js';
+import dbConnection from './infra/sequelize/connection.js';
+import Logger from './infra/pino/logger.js';
+import env from './config/env.js';
+import rabbitConnection from './infra/rabbit/connection.js';
+import { server } from './infra/express/server.js';
 
 async function bootstrap() {
-  await initSequelize();
+  await dbConnection.authenticate();
+  Logger.info({ message: "Conexão com a base de dados estabelecida" });
 
-  const app = express();
-  const getUsers = new GetUsersUseCase();
+  await rabbitConnection.connect();
 
-  app.use(helmet());
-  app.use(cors());
-  app.use(express.json());
-  app.use(clerkAuth);
-  setupSwagger(app);
+  if (env("NODE_ENV") !== "production" && env("NODE_ENV") !== "prod") {
+    process.on('unhandledRejection', (reason, promise) => {
+      Logger.error({ reason, message: 'Unhandled Rejection' });
+    });
+  }
 
-  app.get('/api/health', (_req, res) => {
-    res.json({ status: 'ok', service: 'backend', architecture: 'clean' });
-  });
-
-  const usersHandler = async (_req: express.Request, res: express.Response) => {
-    const users = await getUsers.execute();
-    res.json(users);
-  };
-
-  app.get('/api/users', requireClerkAuth, usersHandler);
-
-  const port = process.env.PORT ?? 3000;
-  app.listen(port, () => console.log(`🚀 backend (clean) on :${port}`));
+  server.listen(
+    env("SERVER_PORT"),
+    () => Logger.info({
+      port: env("SERVER_PORT"),
+      host: env("SERVER_HOST"),
+      message: `Server is running`,
+    })
+  );
 }
 
-bootstrap();
+bootstrap().catch((error: unknown) => {
+  if (error instanceof Error) {
+    Logger.error({
+      error: {
+        name: error.name,
+        message: error.message,
+        // stack: error.stack,
+      },
+      message: "App initialization failed",
+    });
+  } else {
+    Logger.error({ error, message: "App initialization failed" });
+  }
+  process.exit(1);
+});

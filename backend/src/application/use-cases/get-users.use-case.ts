@@ -1,4 +1,4 @@
-import { User } from '../../domain/entities/user.entity.js';
+import { User as UserEntity } from '../../domain/entities/user.entity.js';
 import { User } from '../../infra/sequelize/models/user.model.js';
 
 export class GetUsersUseCase {
