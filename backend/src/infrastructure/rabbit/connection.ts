@@ -1,5 +1,5 @@
 import env from "@src/config/env.js";
-import Logger from "@src/infra/pino/logger.js";
+import Logger from "@src/infrastructure/pino/logger.js";
 import { AmqpConnectionManager, connect } from "amqp-connection-manager";
 
 const log = Logger.publishTo({ context: "AMQP" });

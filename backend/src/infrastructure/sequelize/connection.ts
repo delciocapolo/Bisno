@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize-typescript";
 import env from "@src/config/env.js";
-import Logger from "@src/infra/pino/logger.js";
+import Logger from "@src/infrastructure/pino/logger.js";
+import path from "node:path";
 
 const log = Logger.publishTo({ context: "sequelize" });
 
@@ -17,14 +18,22 @@ class Database {
                     password: env("DB_PASSWORD"),
                     host: env("DB_HOST"),
                     port: env.parseInt("DB_PORT"),
+                    logging: false,
+                    define: {
+                        underscored: true
+                    },
                     pool: {
                         max: 10,
                         min: 0,
                         acquire: 30000,
                         idle: 10000,
                     },
-                    models: [],
-                    logging: false,
+                    models: [
+                        path.resolve(__dirname, "/models/**/*.model.ts"),
+                    ],
+                    modelMatch: (filename, member) => {
+                        return filename.substring(0, filename.indexOf('.model')) === member.toLowerCase();
+                    },
                 });
             } catch (error: unknown) {
                 const message = error instanceof Error ? error.message : String(error);

@@ -1,0 +1,47 @@
+import { Optional, DataTypes } from 'sequelize';
+import { Table, Model, Column } from 'sequelize-typescript';
+import { dbNameTables } from '@src/shared/constants/db-name-tables.js';
+
+interface CategoryServiceAttributes {
+  id: number;
+  name: string;
+  slug: string;
+  isActive: boolean;
+}
+
+interface CategoryServiceCreationAttributes extends Optional<CategoryServiceAttributes, 'id'> {}
+
+@Table({
+  timestamps: false,
+  underscored: true,
+  tableName: dbNameTables.categoryServices,
+})
+export class CategoryService extends Model<CategoryServiceAttributes, CategoryServiceCreationAttributes> {
+  @Column({
+    primaryKey: true,
+    allowNull: false,
+    type: DataTypes.UUID,
+  })
+  declare id: string;
+
+  @Column({
+    type: DataTypes.STRING(150),
+    allowNull: false,
+    unique: "idxname"
+  })
+  declare name: string;
+
+  @Column({
+    type: DataTypes.STRING(150),
+    allowNull: false,
+    unique: "idxslug"
+  })
+  declare slug: string;
+
+  @Column({
+    allowNull: false,
+    defaultValue: true,
+    type: DataTypes.BOOLEAN,
+  })
+  declare isActive: boolean;
+}

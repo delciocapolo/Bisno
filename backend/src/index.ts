@@ -1,9 +1,9 @@
 import 'dotenv/config';
-import dbConnection from './infra/sequelize/connection.js';
-import Logger from './infra/pino/logger.js';
+import dbConnection from './infrastructure/sequelize/connection.js';
+import Logger from './infrastructure/pino/logger.js';
 import env from './config/env.js';
-import rabbitConnection from './infra/rabbit/connection.js';
-import { server } from './infra/express/server.js';
+import rabbitConnection from './infrastructure/rabbit/connection.js';
+import { server } from './infrastructure/express/server.js';
 
 async function bootstrap() {
   await dbConnection.authenticate();

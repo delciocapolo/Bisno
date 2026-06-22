@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import { clerkAuth } from '../../infra/auth/clerk.middleware.js';
+import { clerkAuth } from '../auth/clerk.middleware.js';
 import { setupSwagger } from '../swagger/setup.js';
 import { healthRouter } from '@src/infrastructure/http/health.routes.js';
 import { userRoutes } from './routes/users/index.js';

@@ -46,7 +46,7 @@ Regras:
 - ORM: **Sequelize**
 
 - Models Sequelize em `infra/sequelize/models/`
-- Inicialização em `infra/sequelize/sequelize`
+- Inicialização em `infra/sequelize/connection`
 - Use migrations do Sequelize para alterações de schema
 
 ## Convenções gerais
