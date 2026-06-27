@@ -7,6 +7,8 @@ ARG SERVER_PORT=3333
 ENV PORT=${SERVER_PORT}
 WORKDIR /usr/src/app
 
+RUN chown ${USER}:${USER} /usr/src/app
+
 # Se precisares de pacotes de sistema (ex: dumb-init, curl), instala aqui com apk, antes de trocar de user:
 # RUN apk add --no-cache dumb-init
 
@@ -19,7 +21,7 @@ ENTRYPOINT ["./entrypoint"]
 # STAGE 2: DEPENDENCIES (só dependências de produção)
 FROM base AS dependencies
 USER root
-RUN corepack enable
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 USER ${USER}
 COPY --chown=${USER}:${USER} package.json pnpm-lock.yaml ./
 RUN pnpm install --prod
@@ -27,7 +29,7 @@ RUN pnpm install --prod
 # STAGE 3: DEV_DEPENDENCIES (todas as dependências, incluindo dev)
 FROM base AS dev_dependencies
 USER root
-RUN corepack enable
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 USER ${USER}
 COPY --chown=${USER}:${USER} package.json pnpm-lock.yaml ./
 RUN pnpm install

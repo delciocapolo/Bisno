@@ -1,3 +1,3 @@
-export interface UseCaseImplement<T> {
-  execute: () => T | Promise<T>;
+export abstract class UseCaseAbstract<T> {
+  abstract execute(params: Record<string, unknown>): Promise<T>;
 }

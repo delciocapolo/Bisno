@@ -1,10 +1,9 @@
-import { EventPublisher } from "@src/domain/ports/event-publisher.js";
 import Logger from "@src/infrastructure/pino/logger.js";
 import { Channel, ChannelWrapper } from "amqp-connection-manager";
 import { ExchangeKey, EXCHANGES } from "../exchanges.js";
 import rabbitConnection from "../connection.js";
 
-const log = Logger.publishTo({ context: "amqp-event-publisher" });
+const eventPublisherLogger = Logger.publishTo({ context: "amqp-event-publisher" });
 
 interface AmqpEventPublishArgs {
   exchange?: ExchangeKey;
@@ -48,10 +47,10 @@ class AmqpEventPublisher {
 
     try {
       await channelWrapper.publish(exchangeName, routingKey, payload);
-      log.info({ payload, routingKey, exchange: exchangeName }, `Payload enviado para ${routingKey}`);
+      eventPublisherLogger.info({ payload, routingKey, exchange: exchangeName }, `Payload enviado para ${routingKey}`);
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
-      log.error({ payload, routingKey, exchange: exchangeName, error: message }, `Falha ao publicar em ${routingKey}`);
+      eventPublisherLogger.error({ payload, routingKey, exchange: exchangeName, error: message }, `Falha ao publicar em ${routingKey}`);
       throw error;
     }
   }
@@ -59,4 +58,4 @@ class AmqpEventPublisher {
 
 const publisher = new AmqpEventPublisher();
 
-export { publisher, AmqpEventPublishArgs, AmqpEventPublisher };
+export { publisher, eventPublisherLogger, AmqpEventPublishArgs, AmqpEventPublisher };

@@ -6,7 +6,7 @@ import { Zone } from './zone.model.js';
 import { Service } from './service.model.js';
 
 interface BisnoAttributes {
-  id: number;
+  id: string;
   zoneId: string;
   serviceId: string;
   customerName: string;
@@ -20,7 +20,16 @@ interface BisnoAttributes {
   deletedAt: string | null;
 }
 
-interface BisnoCreationAttributes extends Optional<BisnoAttributes, 'id'> {}
+export interface BisnoCreationAttributes extends Optional<
+  BisnoAttributes, 
+  | 'id'
+  | 'status'
+  | 'createdAt'
+  | 'updatedAt'
+  | 'deletedAt'
+  | 'distributionRound'
+  | 'description'
+  > {}
 
 @Table({
   timestamps: false,

@@ -1,15 +1,14 @@
-import type { Bisno, BisnoStatusType } from "../entities/bisno.entity.js";
+import { Bisno } from "@src/infrastructure/sequelize/models/bisnos.model.js";
+import { BisnoCreatedPayload } from "@src/shared/events/bisno-events.js";
 
 export interface BisnoRepository {
   list: () => Promise<Bisno[]>;
-  save: (
-    zoneId: string,
-    serviceId: string,
-    customerName: string,
-    customerMobile: string,
-    customerMobileHasWhatsapp: boolean,
-    description: string,
-    status: BisnoStatusType,
-    distributionRound: number,
-  ) => Promise<Bisno | null>;
+  save: ({
+    zoneId,
+    serviceId,
+    customerName,
+    customerMobile,
+    customerMobileHasWhatsapp,
+    description,
+  }: BisnoCreatedPayload) => Promise<Bisno | null>;
 }

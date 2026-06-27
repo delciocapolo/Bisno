@@ -1,10 +1,9 @@
-import { EventPublisher } from "@src/domain/ports/event-publisher.js";
 import Logger from "@src/infrastructure/pino/logger.js";
 import { Channel, ChannelWrapper } from "amqp-connection-manager";
 import { ExchangeKey, EXCHANGES } from "../exchanges.js";
 import rabbitConnection from "../connection.js";
 
-const log = Logger.publishTo({ context: "amqp-event-publisher" });
+const eventConsumerLogger = Logger.publishTo({ context: "amqp-event-consumer" });
 
 interface AmqpEventConsumerArgs<T = unknown> {
   exchange?: ExchangeKey;
@@ -19,13 +18,13 @@ class AmqpEventConsumer {
   constructor() {
     const shutdown = async () => {
       try {
-        log.info({ message: "A fechar consumers..." });
+        eventConsumerLogger.info({ message: "A fechar consumers..." });
         await Promise.all(this.channelWrappers.map((cw) => cw.close()));
-        log.info({ message: "Todos os channels foram fechados" });
+        eventConsumerLogger.info({ message: "Todos os channels foram fechados" });
         process.exit(0);
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
-        log.error({ error: message, message: "Erro ao fechar channels" });
+        eventConsumerLogger.error({ error: message, message: "Erro ao fechar channels" });
         process.exit(1);
       }
     };
@@ -70,18 +69,18 @@ class AmqpEventConsumer {
 
           try {
             const payload = JSON.parse(msg.content.toString()) as T;
-            log.info({ payload, queue, routingKey }, `Mensagem recebida em ${queue}`);
+            eventConsumerLogger.info({ payload, queue, routingKey }, `Mensagem recebida em ${queue}`);
 
             await onMessage(payload);
             channel.ack(msg);
           } catch (error: unknown) {
             const message = error instanceof Error ? error.message : String(error);
-            log.error({ queue, routingKey, error: message }, `Falha ao processar mensagem de ${queue}`);
+            eventConsumerLogger.error({ queue, routingKey, error: message }, `Falha ao processar mensagem de ${queue}`);
             channel.nack(msg, false, false); // não recoloca na mesma queue — vai para a dlx
           }
         });
 
-        log.info({ message: `A escutar a queue: ${queue}` });
+        eventConsumerLogger.info({ message: `A escutar a queue: ${queue}` });
       },
     });
 
@@ -91,4 +90,4 @@ class AmqpEventConsumer {
 
 const consumer = new AmqpEventConsumer();
 
-export { consumer, AmqpEventConsumerArgs, AmqpEventConsumer };
+export { consumer, eventConsumerLogger, AmqpEventConsumerArgs, AmqpEventConsumer };
