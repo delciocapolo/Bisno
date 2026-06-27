@@ -40,3 +40,7 @@ export async function resolveSequencialPromises(...args: Array<() => Promise<any
 
   return results;
 }
+
+export function isDefined<T>(value: T): value is T {
+  return typeof value !== "undefined" && value !== null;
+}

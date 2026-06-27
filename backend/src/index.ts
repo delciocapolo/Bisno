@@ -4,15 +4,17 @@ import Logger from './infrastructure/pino/logger.js';
 import env from './config/env.js';
 import rabbitConnection from './infrastructure/rabbit/connection.js';
 import { server } from './infrastructure/express/server.js';
+import { registerConsumers } from '@src/infrastructure/rabbit/consumers/register-consumers.js';
 
 async function bootstrap() {
   await dbConnection.authenticate();
   Logger.info({ message: "Conexão com a base de dados estabelecida" });
 
   await rabbitConnection.connect();
+  await registerConsumers();
 
   if (env("NODE_ENV") !== "production" && env("NODE_ENV") !== "prod") {
-    process.on('unhandledRejection', (reason, promise) => {
+    process.on('unhandledRejection', (reason) => {
       Logger.error({ reason, message: 'Unhandled Rejection' });
     });
   }
