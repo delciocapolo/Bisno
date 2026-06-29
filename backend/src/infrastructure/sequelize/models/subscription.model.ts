@@ -42,7 +42,8 @@ export class Subscription extends Model<SubscriptionAttributes, SubscriptionCrea
   @Column({
     defaultValue: 0,
     allowNull: false,
-    type: DataTypes.INTEGER.UNSIGNED,
+    validate: { min: 0 },
+    type: DataTypes.INTEGER,
   })
   declare points: number;
 

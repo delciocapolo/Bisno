@@ -2,9 +2,9 @@ import { Router } from "express";
 
 const healthRoutes = Router();
 
-healthRoutes.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', service: 'backend', architecture: 'clean' });
-});
+healthRoutes.get('/', (_req, res) => 
+  res.status(200).json({ status: "ok" })
+);
 
 export {
   healthRoutes

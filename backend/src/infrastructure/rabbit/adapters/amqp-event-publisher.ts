@@ -47,10 +47,10 @@ class AmqpEventPublisher {
 
     try {
       await channelWrapper.publish(exchangeName, routingKey, payload);
-      eventPublisherLogger.info({ payload, routingKey, exchange: exchangeName }, `Payload enviado para ${routingKey}`);
+      eventPublisherLogger.info({ payload, routingKey, exchange: exchangeName }, `Payload sent to ${routingKey}`);
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
-      eventPublisherLogger.error({ payload, routingKey, exchange: exchangeName, error: message }, `Falha ao publicar em ${routingKey}`);
+      eventPublisherLogger.error({ payload, routingKey, exchange: exchangeName, error: message }, `Failed to publish to ${routingKey}`);
       throw error;
     }
   }

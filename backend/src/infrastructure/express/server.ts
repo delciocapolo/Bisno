@@ -18,9 +18,9 @@ server.use(express.json());
 
 // routes
 setupSwagger(server);
-server.use(userRoutes);
-server.use(bisnoRoutes);
-server.use(healthRoutes);
+server.use('/api/users', userRoutes);
+server.use('/api/bisnos', bisnoRoutes);
+server.use('/api/health', healthRoutes);
 
 export {
   server,

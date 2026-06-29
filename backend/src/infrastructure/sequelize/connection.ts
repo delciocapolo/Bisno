@@ -29,15 +29,17 @@ class Database {
                         idle: 10000,
                     },
                     models: [
-                        path.resolve(__dirname, "/models/**/*.model.ts"),
+                        path.resolve(__dirname, "models/**/*.model.ts"),
                     ],
                     modelMatch: (filename, member) => {
-                        return filename.substring(0, filename.indexOf('.model')) === member.toLowerCase();
+                        const normalize = (str: string) => str.toLowerCase().replace(/[^a-z0-9]/g, "");
+                        const base = filename.substring(0, filename.indexOf('.model'));
+                        return normalize(base) === normalize(member);
                     },
                 });
             } catch (error: unknown) {
                 const message = error instanceof Error ? error.message : String(error);
-                log.error({ error: message }, "Erro ao configurar instância do Sequelize");
+                log.error({ error: message }, "Error configuring Sequelize instance");
                 throw new Error("Database configuration error");
             }
 

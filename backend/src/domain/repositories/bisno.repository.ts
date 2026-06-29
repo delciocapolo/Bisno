@@ -1,4 +1,4 @@
-import { Bisno } from "@src/infrastructure/sequelize/models/bisnos.model.js";
+import { Bisno } from "@src/infrastructure/sequelize/models/bisno.model.js";
 import { BisnoCreatedPayload } from "@src/shared/events/bisno-events.js";
 
 export interface BisnoRepository {

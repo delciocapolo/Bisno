@@ -1,7 +1,12 @@
 'use strict';
 
 const { dbNameTables } = require("../../../shared/constants/db-name-tables");
-const { onDownUpdateRowTrigger, onUpdateRowTrigger } = require("../utils/index");
+const { 
+  onUpdateRowTrigger,
+  onDownUpdateRowTrigger, 
+  onConstraintCheckNonNegativeInteger, 
+  onDownConstraintCheckNonNegativeInteger
+} = require("../utils/index");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -36,7 +41,7 @@ module.exports = {
       points: {
         allowNull: false,
         defaultValue: 0,
-        type: Sequelize.INTEGER.UNSIGNED,
+        type: Sequelize.INTEGER,
       },
       activated_at: {
         allowNull: true,
@@ -58,10 +63,12 @@ module.exports = {
     });
 
     await queryInterface.addIndex(dbNameTables.mixeiroHasSubcription, ['subscription_id', 'mixeiro_id']);
+    await onConstraintCheckNonNegativeInteger(queryInterface, dbNameTables.mixeiroHasSubcription, "points");
     await onUpdateRowTrigger(queryInterface, dbNameTables.mixeiroHasSubcription);
   },
 
   async down (queryInterface, Sequelize) {
+    await onDownConstraintCheckNonNegativeInteger(queryInterface, dbNameTables.mixeiroHasSubcription, "points");
     await onDownUpdateRowTrigger(queryInterface, dbNameTables.mixeiroHasSubcription);
     await queryInterface.dropTable(dbNameTables.mixeiroHasSubcription);
   }

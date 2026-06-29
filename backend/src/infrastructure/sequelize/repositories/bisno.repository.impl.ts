@@ -1,4 +1,4 @@
-import { Bisno } from "../models/bisnos.model.js";
+import { Bisno } from "../models/bisno.model.js";
 import { BisnoRepository } from "@src/domain/repositories/bisno.repository.js";
 import { BisnoCreatedPayload } from "@src/shared/events/bisno-events.js";
 

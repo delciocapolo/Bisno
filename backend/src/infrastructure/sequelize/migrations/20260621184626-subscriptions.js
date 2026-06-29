@@ -1,6 +1,10 @@
 'use strict';
 
 const { dbNameTables } = require("../../../shared/constants/db-name-tables");
+const { 
+  onConstraintCheckNonNegativeInteger,
+  onDownConstraintCheckNonNegativeInteger,
+} = require("../utils/index");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -23,7 +27,7 @@ module.exports = {
         allowNull: false,
       },
       points: {
-        type: Sequelize.INTEGER.UNSIGNED,
+        type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0,
       },
@@ -33,8 +37,11 @@ module.exports = {
         allowNull: false,
       },
     });
+
+    await onConstraintCheckNonNegativeInteger(queryInterface, dbNameTables.subscriptions, "points");
   },
   async down(queryInterface, Sequelize) {
+    await onDownConstraintCheckNonNegativeInteger(queryInterface, dbNameTables.subscriptions, "points");
     await queryInterface.dropTable(dbNameTables.subscriptions);
   }
 };

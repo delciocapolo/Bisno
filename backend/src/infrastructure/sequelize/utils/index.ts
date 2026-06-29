@@ -25,3 +25,19 @@ export async function onDownUpdateRowTrigger(queryInterface: QueryInterface, tab
     DROP TRIGGER IF EXISTS set_updated_at_column ON ${tableName};
   `);
 }
+
+
+export async function onConstraintCheckNonNegativeInteger(queryInterface: QueryInterface, tableName: string, columnName: string) {
+  await queryInterface.sequelize.query(`
+    ALTER TABLE ${tableName}
+    ADD CONSTRAINT ${columnName}_non_negative
+    CHECK (${columnName} >= 0);
+  `);
+}
+
+export async function onDownConstraintCheckNonNegativeInteger(queryInterface: QueryInterface, tableName: string, columnName: string) {
+  await queryInterface.sequelize.query(`
+    ALTER TABLE ${tableName}
+    DROP CONSTRAINT IF EXISTS ${columnName}_non_negative;
+  `);
+}

@@ -18,13 +18,13 @@ class AmqpEventConsumer {
   constructor() {
     const shutdown = async () => {
       try {
-        eventConsumerLogger.info({ message: "A fechar consumers..." });
+        eventConsumerLogger.info({ message: "Closing consumers..." });
         await Promise.all(this.channelWrappers.map((cw) => cw.close()));
-        eventConsumerLogger.info({ message: "Todos os channels foram fechados" });
+        eventConsumerLogger.info({ message: "All channels have been closed" });
         process.exit(0);
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
-        eventConsumerLogger.error({ error: message, message: "Erro ao fechar channels" });
+        eventConsumerLogger.error({ error: message, message: "Error closing channels" });
         process.exit(1);
       }
     };
@@ -69,18 +69,18 @@ class AmqpEventConsumer {
 
           try {
             const payload = JSON.parse(msg.content.toString()) as T;
-            eventConsumerLogger.info({ payload, queue, routingKey }, `Mensagem recebida em ${queue}`);
+            eventConsumerLogger.info({ payload, queue, routingKey }, `Message received in ${queue}`);
 
             await onMessage(payload);
             channel.ack(msg);
           } catch (error: unknown) {
             const message = error instanceof Error ? error.message : String(error);
-            eventConsumerLogger.error({ queue, routingKey, error: message }, `Falha ao processar mensagem de ${queue}`);
+            eventConsumerLogger.error({ queue, routingKey, error: message }, `Failed to process message from ${queue}`);
             channel.nack(msg, false, false); // não recoloca na mesma queue — vai para a dlx
           }
         });
 
-        eventConsumerLogger.info({ message: `A escutar a queue: ${queue}` });
+        eventConsumerLogger.info({ message: `Listening queue: ${queue}` });
       },
     });
 

@@ -1,7 +1,12 @@
 'use strict';
 
 const { dbNameTables } = require("../../../shared/constants/db-name-tables");
-const { onDownUpdateRowTrigger, onUpdateRowTrigger } = require("../utils/index");
+const {
+  onUpdateRowTrigger,
+  onDownUpdateRowTrigger,
+  onConstraintCheckNonNegativeInteger,
+  onDownConstraintCheckNonNegativeInteger
+} = require("../utils/index");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -58,7 +63,7 @@ module.exports = {
       distributionRound: {
         allowNull: false,
         defaultValue: 0,
-        type: Sequelize.INTEGER.UNSIGNED,
+        type: Sequelize.INTEGER,
       },
       created_at: {
         allowNull: false,
@@ -76,11 +81,13 @@ module.exports = {
     });
 
     await queryInterface.addIndex(dbNameTables.bisnos, ['zone_id', 'service_id']);
+    await onConstraintCheckNonNegativeInteger(queryInterface, dbNameTables.bisnos, "distributionRound");
     await onUpdateRowTrigger(queryInterface, dbNameTables.bisnos);
   },
 
   async down (queryInterface, Sequelize) {
     await onDownUpdateRowTrigger(queryInterface, dbNameTables.bisnos);
+    await onDownConstraintCheckNonNegativeInteger(queryInterface, dbNameTables.bisnos, "distributionRound");
     await queryInterface.dropTable(dbNameTables.bisnos);
   }
 };

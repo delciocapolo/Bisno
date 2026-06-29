@@ -8,7 +8,7 @@ import { registerConsumers } from '@src/infrastructure/rabbit/consumers/register
 
 async function bootstrap() {
   await dbConnection.authenticate();
-  Logger.info({ message: "Conexão com a base de dados estabelecida" });
+  Logger.info({ message: "Database connection established" });
 
   await rabbitConnection.connect();
   await registerConsumers();

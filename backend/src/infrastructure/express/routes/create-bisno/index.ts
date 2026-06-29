@@ -27,7 +27,7 @@ const createBisnoHandler = async (req: express.Request, res: express.Response) =
   }
 };
 
-bisnoRoutes.get('/api/create-bisno', requireClerkAuth, createBisnoHandler);
+bisnoRoutes.get('/create', requireClerkAuth, createBisnoHandler);
 
 export {
   bisnoRoutes

@@ -2,7 +2,7 @@ import { Optional, DataTypes, Sequelize } from 'sequelize';
 import { Table, Model, Column, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { dbNameTables } from '@src/shared/constants/db-name-tables.js';
 import type { LeadStatus } from '@src/domain/entities/lead.entity.js';
-import { Bisno } from './bisnos.model.js';
+import { Bisno } from './bisno.model.js';
 import { Mixeiro } from './mixeiro.model.js';
 
 interface LeadAttributes {

@@ -33,7 +33,8 @@ export class MixeiroHasSubscription extends Model<MixeiroHasSubscriptionAttribut
   @Column({
     allowNull: false,
     defaultValue: 0,
-    type: DataTypes.INTEGER.UNSIGNED,
+    validate: { min: 0 },
+    type: DataTypes.INTEGER,
   })
   declare points: number;
 

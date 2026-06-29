@@ -77,7 +77,8 @@ export class Bisno extends Model<BisnoAttributes, BisnoCreationAttributes> {
   declare status: BisnoStatusType;
 
   @Column({
-    type: DataTypes.INTEGER.UNSIGNED,
+    type: DataTypes.INTEGER,
+    validate: { min: 0 },
     defaultValue: 0,
     allowNull: false,
   })

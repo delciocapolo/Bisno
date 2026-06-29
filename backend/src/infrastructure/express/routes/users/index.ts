@@ -8,7 +8,7 @@ const usersHandler = async (_req: express.Request, res: express.Response) => {
   res.json(users);
 };
 
-userRoutes.get('/api/users', requireClerkAuth, usersHandler);
+userRoutes.get('/', requireClerkAuth, usersHandler);
 
 export {
   userRoutes
