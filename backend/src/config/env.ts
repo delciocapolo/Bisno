@@ -1,23 +1,24 @@
-import { IEnvironment } from "../shared/@types/environment.js";
+import { getSafeInteger } from "../shared/utils/index";
+import { IEnvironment } from "../shared/@types/environment";
 
 type IEnvironmentKeys = keyof IEnvironment;
 
 const envDefault: Partial<IEnvironment> = {
-  SERVER_PORT: process.env.SERVER_PORT || 3000,
+  SERVER_PORT: getSafeInteger(process.env.SERVER_PORT) || 3000,
   SERVER_HOST: process.env.SERVER_HOST || "localhost",
-  NODE_ENV: (process.env.NODE_ENV as IEnvironment["NODE_ENV"]) ?? "development",
-  TIMEZONE: process.env.TIMEZONE ?? "Africa/Luanda",
-  RABBITMQ_URI: process.env.RABBITMQ_URI ?? "",
-  DB_NAME: process.env.DB_NAME ?? "bisno",
-  DB_DIALECT: process.env.DB_DIALECT ?? "postgres",
-  DB_PORT: process.env.DB_PORT ?? 5432,
-  DB_HOST: process.env.DB_HOST ?? "localhost",
-  DB_USER: process.env.DB_USER ?? "root",
-  DB_PASSWORD: process.env.DB_PASSWORD ?? "root",
+  NODE_ENV: (process.env.NODE_ENV as IEnvironment["NODE_ENV"]) || "development",
+  TIMEZONE: process.env.TIMEZONE || "Africa/Luanda",
+  RABBITMQ_URI: process.env.RABBITMQ_URI || "",
+  DB_NAME: process.env.DB_NAME || "bisno",
+  DB_DIALECT: process.env.DB_DIALECT || "postgres",
+  DB_PORT: getSafeInteger(process.env.DB_PORT) || 5432,
+  DB_HOST: process.env.DB_HOST || "localhost",
+  DB_USER: process.env.DB_USER || "root",
+  DB_PASSWORD: process.env.DB_PASSWORD || "root",
 };
 
 function env(name: IEnvironmentKeys): string {
-  const value = envDefault[name] ?? process.env[name];
+  const value = envDefault[name] || process.env[name];
 
   if (value === undefined || value === "" || value === null) {
     throw new Error(`Environment variable "${name}" is not defined.`);
@@ -37,7 +38,7 @@ env.parseInt = (name: IEnvironmentKeys): number => {
 };
 
 env.optional = (name: IEnvironmentKeys): string | undefined => {
-  const value = envDefault[name] ?? process.env[name];
+  const value = envDefault[name] || process.env[name];
   return value !== undefined ? String(value) : undefined;
 };
 

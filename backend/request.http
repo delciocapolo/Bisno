@@ -1,0 +1,15 @@
+@baseUrl=https://www.bisno.ao/api
+
+
+### Create bisno
+POST {{baseUrl}}/bisnos/create
+Content-Type: application/json
+
+{
+  "customerName": "Délcio Capolo",
+  "customerMobile": "+244923456789",
+  "customerMobileHasWhatsapp": true,
+  "serviceId": "7f1b5b30-b5bf-4ea9-83e7-cef110022d2c",
+  "zoneId": "7f1b5b30-b5bf-4ea9-83e7-cef110022d2c",
+  "description": "Precisa de um canalziador com urgência"
+}

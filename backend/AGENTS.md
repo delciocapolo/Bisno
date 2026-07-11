@@ -13,7 +13,7 @@ Siga estas diretrizes ao implementar funcionalidades neste projeto.
 - **Arquitetura:** Clean Architecture
 - **Banco:** PostgreSQL
 - **ORM:** Sequelize
-- **Auth:** Clerk
+- **Auth:** JWT
 - **Mensageria:** RabbitMQ
 - **Redis:** sim
 - **Swagger:** sim

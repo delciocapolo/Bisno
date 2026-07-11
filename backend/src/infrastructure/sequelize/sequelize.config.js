@@ -1,11 +1,20 @@
-require('ts-node/register');
-const env = require("../../config/env");
+require('dotenv').config();
 
 module.exports = {
-  username: env("DB_USER"),
-  password: env("DB_PASSWORD"),
-  database: env("DB_NAME"),
-  host: env("DB_HOST"),
-  port: env("DB_PORT"),
-  dialect: env("DB_DIALECT"),
+  development: {
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT || '5432'),
+    dialect: process.env.DB_DIALECT || 'postgres',
+  },
+  production: {
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT || '5432'),
+    dialect: process.env.DB_DIALECT || 'postgres',
+  },
 };

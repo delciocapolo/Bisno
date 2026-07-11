@@ -10,7 +10,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.literal('gen_random_uuid')
+        defaultValue: Sequelize.literal('gen_random_uuid()')
       },
       bisno_id: {
         allowNull: false,

@@ -1,4 +1,4 @@
-import { requireClerkAuth } from "@src/infrastructure/auth/clerk.middleware.js";
+import { jwtMiddleware } from "@src/infrastructure/auth/jwt.middleware";
 import express, { Router } from "express";
 
 const userRoutes = Router();
@@ -8,7 +8,7 @@ const usersHandler = async (_req: express.Request, res: express.Response) => {
   res.json(users);
 };
 
-userRoutes.get('/', requireClerkAuth, usersHandler);
+userRoutes.get('/', jwtMiddleware, usersHandler);
 
 export {
   userRoutes

@@ -1,5 +1,5 @@
 import { SequelizeBisnoRepository } from "@src/infrastructure/sequelize/repositories/bisno.repository.impl.js";
-import { CreateBisnoUseCase } from "./create-bisno.use-case.js";
+import { CreateBisnoUseCase } from "./bisnos/create-bisno.use-case.js";
 
 const bisnoRepository = new SequelizeBisnoRepository();
 

@@ -16,7 +16,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.literal('gen_random_uuid')
+        defaultValue: Sequelize.literal('gen_random_uuid()')
       },
       zone_id: {
         allowNull: false,
@@ -60,7 +60,7 @@ module.exports = {
         defaultValue: "pending",
         type: Sequelize.ENUM('pending', 'matched', 'done', 'exhausted'),
       },
-      distributionRound: {
+      distribution_round: {
         allowNull: false,
         defaultValue: 0,
         type: Sequelize.INTEGER,
@@ -81,13 +81,13 @@ module.exports = {
     });
 
     await queryInterface.addIndex(dbNameTables.bisnos, ['zone_id', 'service_id']);
-    await onConstraintCheckNonNegativeInteger(queryInterface, dbNameTables.bisnos, "distributionRound");
+    await onConstraintCheckNonNegativeInteger(queryInterface, dbNameTables.bisnos, "distribution_round");
     await onUpdateRowTrigger(queryInterface, dbNameTables.bisnos);
   },
 
   async down (queryInterface, Sequelize) {
     await onDownUpdateRowTrigger(queryInterface, dbNameTables.bisnos);
-    await onDownConstraintCheckNonNegativeInteger(queryInterface, dbNameTables.bisnos, "distributionRound");
+    await onDownConstraintCheckNonNegativeInteger(queryInterface, dbNameTables.bisnos, "distribution_round");
     await queryInterface.dropTable(dbNameTables.bisnos);
   }
 };

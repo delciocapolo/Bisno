@@ -1,8 +1,7 @@
 import z from "zod";
 import express, { Router } from "express";
-import { requireClerkAuth } from "@src/infrastructure/auth/clerk.middleware.js";
-import { schemaFormCreateBisno } from "@src/shared/schemas/form-create-bisno.js";
 import { serverLogger } from "../../server.js";
+import { schemaFormCreateBisno } from "@src/shared/schemas/form-create-bisno.js";
 import { publisher } from "@src/infrastructure/rabbit/adapters/amqp-event-publisher.js";
 
 const bisnoRoutes = Router();
@@ -19,15 +18,16 @@ const createBisnoHandler = async (req: express.Request, res: express.Response) =
   } catch (error) {
     serverLogger.error({ error }, "Error occurred while processing bisno data");
     if(error instanceof z.ZodError) {
+      const erros = error.issues.map((issue) => ({ field: issue?.path?.at(0), error: issue.message }))
       return res.status(422).json({
         data: null,
-        message: error.issues.map((issue) => issue.message),
+        message: erros,
       });
     }
   }
 };
 
-bisnoRoutes.get('/create', requireClerkAuth, createBisnoHandler);
+bisnoRoutes.post('/create', createBisnoHandler);
 
 export {
   bisnoRoutes
