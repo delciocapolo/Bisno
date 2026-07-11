@@ -1,6 +1,6 @@
-import { Optional, DataTypes } from 'sequelize';
-import { Table, Model, Column } from 'sequelize-typescript';
-import { dbNameTables } from '@src/shared/constants/db-name-tables.js';
+import { Optional, DataTypes } from "sequelize";
+import { Table, Model, Column } from "sequelize-typescript";
+import { dbNameTables } from "@src/shared/constants/db-name-tables";
 
 interface SubscriptionAttributes {
   id: number;
@@ -10,14 +10,17 @@ interface SubscriptionAttributes {
   isActive: boolean;
 }
 
-interface SubscriptionCreationAttributes extends Optional<SubscriptionAttributes, 'id'> {}
+type SubscriptionCreationAttributes = Optional<SubscriptionAttributes, "id">;
 
 @Table({
   timestamps: false,
   underscored: true,
   tableName: dbNameTables.subscriptions,
 })
-export class Subscription extends Model<SubscriptionAttributes, SubscriptionCreationAttributes> {
+export class Subscription extends Model<
+  SubscriptionAttributes,
+  SubscriptionCreationAttributes
+> {
   @Column({
     primaryKey: true,
     allowNull: false,
@@ -28,14 +31,14 @@ export class Subscription extends Model<SubscriptionAttributes, SubscriptionCrea
   @Column({
     type: DataTypes.STRING(150),
     allowNull: false,
-    unique: "idxname"
+    unique: "idxname",
   })
   declare name: string;
 
   @Column({
     type: DataTypes.STRING(150),
     allowNull: false,
-    unique: "idxslug"
+    unique: "idxslug",
   })
   declare slug: string;
 

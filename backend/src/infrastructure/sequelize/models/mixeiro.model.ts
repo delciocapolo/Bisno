@@ -1,9 +1,15 @@
-import { Optional, DataTypes, Sequelize } from 'sequelize';
-import { Table, Model, Column, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { dbNameTables } from '@src/shared/constants/db-name-tables.js';
-import { MixeiroStatusType } from '@src/domain/entities/mixeiro.entity.js';
-import { CategoryService } from './category-service.model.js';
-import { Zone } from './zone.model.js';
+import { Optional, DataTypes, Sequelize } from "sequelize";
+import {
+  Table,
+  Model,
+  Column,
+  ForeignKey,
+  BelongsTo,
+} from "sequelize-typescript";
+import { dbNameTables } from "@src/shared/constants/db-name-tables";
+import { MixeiroStatusType } from "@src/domain/entities/mixeiro.entity.js";
+import { CategoryService } from "./category-service.model.js";
+import { Zone } from "./zone.model.js";
 
 interface MixeiroAttributes {
   id: number;
@@ -25,14 +31,17 @@ interface MixeiroAttributes {
   deletedAt: Date | null;
 }
 
-interface MixeiroCreationAttributes extends Optional<MixeiroAttributes, 'id'> {}
+type MixeiroCreationAttributes = Optional<MixeiroAttributes, "id">;
 
 @Table({
   timestamps: false,
   underscored: true,
   tableName: dbNameTables.mixeiros,
 })
-export class Mixeiro extends Model<MixeiroAttributes, MixeiroCreationAttributes> {
+export class Mixeiro extends Model<
+  MixeiroAttributes,
+  MixeiroCreationAttributes
+> {
   @Column({
     primaryKey: true,
     allowNull: false,

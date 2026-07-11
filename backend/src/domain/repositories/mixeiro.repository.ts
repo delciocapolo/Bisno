@@ -1,4 +1,4 @@
-import { Mixeiro, MixeiroStatusType } from "../entities/mixeiro.entity.js";
+import type { Mixeiro, MixeiroStatusType } from "../entities/mixeiro.entity.js";
 
 export interface MixeiroRepository {
   list: () => Promise<Mixeiro[]>;

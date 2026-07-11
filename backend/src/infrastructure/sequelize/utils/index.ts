@@ -1,6 +1,9 @@
-import { QueryInterface } from "sequelize";
+import type { QueryInterface } from "sequelize";
 
-export async function onUpdateRowTrigger(queryInterface: QueryInterface, tableName: string) {
+export async function onUpdateRowTrigger(
+  queryInterface: QueryInterface,
+  tableName: string,
+) {
   await queryInterface.sequelize.query(`
     CREATE OR REPLACE FUNCTION update_updated_at_column()
     RETURNS TRIGGER AS $$
@@ -20,14 +23,20 @@ export async function onUpdateRowTrigger(queryInterface: QueryInterface, tableNa
   `);
 }
 
-export async function onDownUpdateRowTrigger(queryInterface: QueryInterface, tableName: string) {
+export async function onDownUpdateRowTrigger(
+  queryInterface: QueryInterface,
+  tableName: string,
+) {
   await queryInterface.sequelize.query(`
     DROP TRIGGER IF EXISTS set_updated_at_column ON ${tableName};
   `);
 }
 
-
-export async function onConstraintCheckNonNegativeInteger(queryInterface: QueryInterface, tableName: string, columnName: string) {
+export async function onConstraintCheckNonNegativeInteger(
+  queryInterface: QueryInterface,
+  tableName: string,
+  columnName: string,
+) {
   await queryInterface.sequelize.query(`
     ALTER TABLE ${tableName}
     ADD CONSTRAINT ${columnName}_non_negative
@@ -35,7 +44,11 @@ export async function onConstraintCheckNonNegativeInteger(queryInterface: QueryI
   `);
 }
 
-export async function onDownConstraintCheckNonNegativeInteger(queryInterface: QueryInterface, tableName: string, columnName: string) {
+export async function onDownConstraintCheckNonNegativeInteger(
+  queryInterface: QueryInterface,
+  tableName: string,
+  columnName: string,
+) {
   await queryInterface.sequelize.query(`
     ALTER TABLE ${tableName}
     DROP CONSTRAINT IF EXISTS ${columnName}_non_negative;

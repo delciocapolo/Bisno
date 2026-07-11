@@ -1,7 +1,7 @@
 /**
- * 
+ *
  * @param args Array<() => Promise<any>>
- * @returns 
+ * @returns
  * @example
  * resolveSequencialPromises(
  *    () => Promise.resolve(true),
@@ -10,18 +10,20 @@
  * );
  */
 
-export async function resolveSequencialPromises(...args: Array<() => Promise<any>>) {
+export async function resolveSequencialPromises(
+  ...args: Array<() => Promise<any>>
+) {
   type TypeResult = {
     name: string;
     success: boolean;
     error?: any;
     value?: any;
-  }
+  };
 
   const results: TypeResult[] = [];
 
   for (const task of args) {
-    const name = task.name || 'anonymous';
+    const name = task.name || "anonymous";
     try {
       const result = await task();
       results.push({

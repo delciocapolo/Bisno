@@ -1,21 +1,23 @@
-import jwt from 'jsonwebtoken';
-import type { Request, Response, NextFunction } from 'express';
-import env from '@src/config/env';
+import jwt from "jsonwebtoken";
+import type { Request, Response, NextFunction } from "express";
+import env from "@src/config/env";
 
 export function jwtMiddleware(req: Request, res: Response, next: NextFunction) {
-  const token = req.headers.authorization?.replace('Bearer ', '');
+  const token = req.headers.authorization?.replace("Bearer ", "");
 
-  if (!token) return res.status(401).json({ message: 'Unauthorized' });
+  if (!token) return res.status(401).json({ message: "Unauthorized" });
 
   try {
     const request = req as Request & { user?: unknown };
-    request.user = jwt.verify(token, process.env.JWT_SECRET || env("JWT_SECRET"));
+    request.user = jwt.verify(
+      token,
+      process.env.JWT_SECRET || env("JWT_SECRET"),
+    );
     next();
   } catch {
-    return res.status(401).json({ message: 'Invalid token' });
+    return res.status(401).json({ message: "Invalid token" });
   }
 }
-
 
 // Fluxo
 // 1. O cliente envia uma requisição para o servidor com um token JWT no cabeçalho [Authorization].

@@ -1,23 +1,25 @@
-'use strict';
+"use strict";
 
-const { dbNameTables } = require("../../../shared/constants/db-name-tables");
+const {
+  dbNameTables,
+} = require("../../../shared/constants/db-name-tables.cjs");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable(dbNameTables.leads, {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.literal('gen_random_uuid()')
+        defaultValue: Sequelize.literal("gen_random_uuid()"),
       },
       bisno_id: {
         allowNull: false,
         type: Sequelize.UUID,
         references: {
           model: dbNameTables.bisnos,
-          key: 'id'
+          key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "RESTRICT",
@@ -27,7 +29,7 @@ module.exports = {
         type: Sequelize.UUID,
         references: {
           model: dbNameTables.mixeiros,
-          key: 'id'
+          key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "RESTRICT",
@@ -43,7 +45,7 @@ module.exports = {
       status: {
         allowNull: false,
         defaultValue: "sent",
-        type: Sequelize.ENUM('sent', 'accepted', 'expired'),
+        type: Sequelize.ENUM("sent", "accepted", "expired"),
       },
       created_at: {
         allowNull: false,
@@ -60,12 +62,15 @@ module.exports = {
       },
     });
 
-    await queryInterface.addIndex(dbNameTables.leads, ['bisno_id', 'mixeiro_id']);
+    await queryInterface.addIndex(dbNameTables.leads, [
+      "bisno_id",
+      "mixeiro_id",
+    ]);
     await onUpdateRowTrigger(queryInterface, dbNameTables.leads);
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     await onDownUpdateRowTrigger(queryInterface, dbNameTables.leads);
     await queryInterface.dropTable(dbNameTables.leads);
-  }
+  },
 };

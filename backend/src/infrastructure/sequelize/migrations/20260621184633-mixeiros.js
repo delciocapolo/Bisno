@@ -1,24 +1,29 @@
-'use strict';
+"use strict";
 
-const { dbNameTables } = require("../../../shared/constants/db-name-tables");
-const { onDownUpdateRowTrigger, onUpdateRowTrigger } = require("../utils/index");
+const {
+  dbNameTables,
+} = require("../../../shared/constants/db-name-tables.cjs");
+const {
+  onDownUpdateRowTrigger,
+  onUpdateRowTrigger,
+} = require("../utils/index");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable(dbNameTables.mixeiros, {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.literal("gen_random_uuid()")
+        defaultValue: Sequelize.literal("gen_random_uuid()"),
       },
       category_id: {
         allowNull: false,
         type: Sequelize.UUID,
         references: {
           model: dbNameTables.categoryServices,
-          key: "id"
+          key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "RESTRICT",
@@ -28,7 +33,7 @@ module.exports = {
         type: Sequelize.UUID,
         references: {
           model: dbNameTables.zones,
-          key: "id"
+          key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "RESTRICT",
@@ -102,8 +107,8 @@ module.exports = {
     await onUpdateRowTrigger(queryInterface, dbNameTables.mixeiros);
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     await onDownUpdateRowTrigger(queryInterface, dbNameTables.mixeiros);
     await queryInterface.dropTable(dbNameTables.mixeiros);
-  }
+  },
 };

@@ -1,7 +1,12 @@
-'use strict';
+"use strict";
 
-const { dbNameTables } = require("../../../shared/constants/db-name-tables");
-const { onUpdateRowTrigger, onDownUpdateRowTrigger } = require("../utils/index");
+const {
+  dbNameTables,
+} = require("../../../shared/constants/db-name-tables.cjs");
+const {
+  onUpdateRowTrigger,
+  onDownUpdateRowTrigger,
+} = require("../utils/index");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -11,17 +16,17 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.literal('gen_random_uuid()'),
+        defaultValue: Sequelize.literal("gen_random_uuid()"),
       },
       category_id: {
         allowNull: false,
         type: Sequelize.UUID,
         references: {
           model: dbNameTables.categoryServices,
-          key: 'id',
+          key: "id",
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT',
+        onUpdate: "CASCADE",
+        onDelete: "RESTRICT",
       },
       name: {
         type: Sequelize.STRING(150),
@@ -45,20 +50,20 @@ module.exports = {
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updated_at: {
         allowNull: true,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
 
-    await queryInterface.addIndex(dbNameTables.services, ['category_id']);
+    await queryInterface.addIndex(dbNameTables.services, ["category_id"]);
     await onUpdateRowTrigger(queryInterface, dbNameTables.services);
   },
   async down(queryInterface, Sequelize) {
     await onDownUpdateRowTrigger(queryInterface, dbNameTables.services);
     await queryInterface.dropTable(dbNameTables.services);
-  }
+  },
 };

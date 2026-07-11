@@ -1,29 +1,31 @@
-'use strict';
+"use strict";
 
-const { dbNameTables } = require("../../../shared/constants/db-name-tables");
+const {
+  dbNameTables,
+} = require("../../../shared/constants/db-name-tables.cjs");
 const {
   onUpdateRowTrigger,
   onDownUpdateRowTrigger,
   onConstraintCheckNonNegativeInteger,
-  onDownConstraintCheckNonNegativeInteger
+  onDownConstraintCheckNonNegativeInteger,
 } = require("../utils/index");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable(dbNameTables.bisnos, {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.literal('gen_random_uuid()')
+        defaultValue: Sequelize.literal("gen_random_uuid()"),
       },
       zone_id: {
         allowNull: false,
         type: Sequelize.UUID,
         references: {
           model: dbNameTables.zones,
-          key: 'id'
+          key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "RESTRICT",
@@ -33,7 +35,7 @@ module.exports = {
         type: Sequelize.UUID,
         references: {
           model: dbNameTables.services,
-          key: 'id'
+          key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "RESTRICT",
@@ -58,7 +60,7 @@ module.exports = {
       status: {
         allowNull: false,
         defaultValue: "pending",
-        type: Sequelize.ENUM('pending', 'matched', 'done', 'exhausted'),
+        type: Sequelize.ENUM("pending", "matched", "done", "exhausted"),
       },
       distribution_round: {
         allowNull: false,
@@ -80,14 +82,25 @@ module.exports = {
       },
     });
 
-    await queryInterface.addIndex(dbNameTables.bisnos, ['zone_id', 'service_id']);
-    await onConstraintCheckNonNegativeInteger(queryInterface, dbNameTables.bisnos, "distribution_round");
+    await queryInterface.addIndex(dbNameTables.bisnos, [
+      "zone_id",
+      "service_id",
+    ]);
+    await onConstraintCheckNonNegativeInteger(
+      queryInterface,
+      dbNameTables.bisnos,
+      "distribution_round",
+    );
     await onUpdateRowTrigger(queryInterface, dbNameTables.bisnos);
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     await onDownUpdateRowTrigger(queryInterface, dbNameTables.bisnos);
-    await onDownConstraintCheckNonNegativeInteger(queryInterface, dbNameTables.bisnos, "distribution_round");
+    await onDownConstraintCheckNonNegativeInteger(
+      queryInterface,
+      dbNameTables.bisnos,
+      "distribution_round",
+    );
     await queryInterface.dropTable(dbNameTables.bisnos);
-  }
+  },
 };

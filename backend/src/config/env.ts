@@ -1,5 +1,5 @@
 import { getSafeInteger } from "../shared/utils/index";
-import { IEnvironment } from "../shared/@types/environment";
+import type { IEnvironment } from "../shared/@types/environment";
 
 type IEnvironmentKeys = keyof IEnvironment;
 

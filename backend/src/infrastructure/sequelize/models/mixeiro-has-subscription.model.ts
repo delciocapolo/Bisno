@@ -1,8 +1,14 @@
-import { Optional, DataTypes, Sequelize } from 'sequelize';
-import { Table, Model, Column, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { dbNameTables } from '@src/shared/constants/db-name-tables.js';
-import { Subscription } from './subscription.model.js';
-import { Mixeiro } from './mixeiro.model.js';
+import { Optional, DataTypes, Sequelize } from "sequelize";
+import {
+  Table,
+  Model,
+  Column,
+  ForeignKey,
+  BelongsTo,
+} from "sequelize-typescript";
+import { dbNameTables } from "@src/shared/constants/db-name-tables";
+import { Subscription } from "./subscription.model.js";
+import { Mixeiro } from "./mixeiro.model.js";
 
 interface MixeiroHasSubscriptionAttributes {
   id: number;
@@ -15,14 +21,20 @@ interface MixeiroHasSubscriptionAttributes {
   deletedAt: Date | null;
 }
 
-interface MixeiroHasSubscriptionCreationAttributes extends Optional<MixeiroHasSubscriptionAttributes, 'id'> {}
+type MixeiroHasSubscriptionCreationAttributes = Optional<
+  MixeiroHasSubscriptionAttributes,
+  "id"
+>;
 
 @Table({
   timestamps: false,
   underscored: true,
   tableName: dbNameTables.mixeiroHasSubcription,
 })
-export class MixeiroHasSubscription extends Model<MixeiroHasSubscriptionAttributes, MixeiroHasSubscriptionCreationAttributes> {
+export class MixeiroHasSubscription extends Model<
+  MixeiroHasSubscriptionAttributes,
+  MixeiroHasSubscriptionCreationAttributes
+> {
   @Column({
     primaryKey: true,
     allowNull: false,

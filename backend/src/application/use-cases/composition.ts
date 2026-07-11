@@ -6,6 +6,4 @@ const bisnoRepository = new SequelizeBisnoRepository();
 // use-cases
 const createBisnoUseCase = new CreateBisnoUseCase(bisnoRepository);
 
-export {
-  createBisnoUseCase,
-};
+export { createBisnoUseCase };

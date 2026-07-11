@@ -1,9 +1,12 @@
 import Logger from "@src/infrastructure/pino/logger.js";
-import { Channel, ChannelWrapper } from "amqp-connection-manager";
-import { ExchangeKey, EXCHANGES } from "../exchanges.js";
+import type { Channel, ChannelWrapper } from "amqp-connection-manager";
+import type { ExchangeKey } from "../exchanges.js";
+import { EXCHANGES } from "../exchanges.js";
 import rabbitConnection from "../connection.js";
 
-const eventConsumerLogger = Logger.publishTo({ context: "amqp-event-consumer" });
+const eventConsumerLogger = Logger.publishTo({
+  context: "amqp-event-consumer",
+});
 
 interface AmqpEventConsumerArgs<T = unknown> {
   exchange?: ExchangeKey;
@@ -24,7 +27,10 @@ class AmqpEventConsumer {
         process.exit(0);
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
-        eventConsumerLogger.error({ error: message, message: "Error closing channels" });
+        eventConsumerLogger.error({
+          error: message,
+          message: "Error closing channels",
+        });
         process.exit(1);
       }
     };
@@ -53,7 +59,9 @@ class AmqpEventConsumer {
     const channelWrapper = connection.createChannel({
       json: true,
       setup: async (channel: Channel) => {
-        await channel.assertExchange(exchangeConfig.name, exchangeConfig.type, { durable: true });
+        await channel.assertExchange(exchangeConfig.name, exchangeConfig.type, {
+          durable: true,
+        });
 
         const assertedQueue = await channel.assertQueue(queue, {
           durable: true,
@@ -62,20 +70,31 @@ class AmqpEventConsumer {
           },
         });
 
-        await channel.bindQueue(assertedQueue.queue, exchangeConfig.name, routingKey);
+        await channel.bindQueue(
+          assertedQueue.queue,
+          exchangeConfig.name,
+          routingKey,
+        );
 
         await channel.consume(assertedQueue.queue, async (msg) => {
           if (!msg) return;
 
           try {
             const payload = JSON.parse(msg.content.toString()) as T;
-            eventConsumerLogger.info({ payload, queue, routingKey }, `Message received in ${queue}`);
+            eventConsumerLogger.info(
+              { payload, queue, routingKey },
+              `Message received in ${queue}`,
+            );
 
             await onMessage(payload);
             channel.ack(msg);
           } catch (error: unknown) {
-            const message = error instanceof Error ? error.message : String(error);
-            eventConsumerLogger.error({ queue, routingKey, error: message }, `Failed to process message from ${queue}`);
+            const message =
+              error instanceof Error ? error.message : String(error);
+            eventConsumerLogger.error(
+              { queue, routingKey, error: message },
+              `Failed to process message from ${queue}`,
+            );
             channel.nack(msg, false, false); // não recoloca na mesma queue — vai para a dlx
           }
         });
@@ -90,4 +109,9 @@ class AmqpEventConsumer {
 
 const consumer = new AmqpEventConsumer();
 
-export { consumer, eventConsumerLogger, AmqpEventConsumerArgs, AmqpEventConsumer };
+export {
+  consumer,
+  eventConsumerLogger,
+  AmqpEventConsumerArgs,
+  AmqpEventConsumer,
+};

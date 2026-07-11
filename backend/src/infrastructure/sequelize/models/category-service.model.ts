@@ -1,6 +1,6 @@
-import { Optional, DataTypes } from 'sequelize';
-import { Table, Model, Column } from 'sequelize-typescript';
-import { dbNameTables } from '@src/shared/constants/db-name-tables.js';
+import { Optional, DataTypes } from "sequelize";
+import { Table, Model, Column } from "sequelize-typescript";
+import { dbNameTables } from "@src/shared/constants/db-name-tables";
 
 interface CategoryServiceAttributes {
   id: number;
@@ -9,14 +9,20 @@ interface CategoryServiceAttributes {
   isActive: boolean;
 }
 
-interface CategoryServiceCreationAttributes extends Optional<CategoryServiceAttributes, 'id'> {}
+type CategoryServiceCreationAttributes = Optional<
+  CategoryServiceAttributes,
+  "id"
+>;
 
 @Table({
   timestamps: false,
   underscored: true,
   tableName: dbNameTables.categoryServices,
 })
-export class CategoryService extends Model<CategoryServiceAttributes, CategoryServiceCreationAttributes> {
+export class CategoryService extends Model<
+  CategoryServiceAttributes,
+  CategoryServiceCreationAttributes
+> {
   @Column({
     primaryKey: true,
     allowNull: false,
@@ -27,14 +33,14 @@ export class CategoryService extends Model<CategoryServiceAttributes, CategorySe
   @Column({
     type: DataTypes.STRING(150),
     allowNull: false,
-    unique: "idxname"
+    unique: "idxname",
   })
   declare name: string;
 
   @Column({
     type: DataTypes.STRING(150),
     allowNull: false,
-    unique: "idxslug"
+    unique: "idxslug",
   })
   declare slug: string;
 

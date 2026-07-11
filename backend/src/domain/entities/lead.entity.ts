@@ -8,10 +8,17 @@ export class Lead {
     public readonly notifiedAt: string | null = null,
     private _respondedAt: string | null,
     private _status: LeadStatus,
-  ) { }
+  ) {}
 
   static notify(bisnoId: string, mixeiroId: string): Lead {
-    return new Lead("lead-1", bisnoId, mixeiroId, new Date().toISOString(), null, "sent");
+    return new Lead(
+      "lead-1",
+      bisnoId,
+      mixeiroId,
+      new Date().toISOString(),
+      null,
+      "sent",
+    );
   }
 
   public get status(): LeadStatus {

@@ -45,7 +45,9 @@ export class Mixeiro {
     }
 
     if (!this.isActive || this.isDeleted) {
-      throw new Error(`Mixeiro ${this.id} can't be locked. It's inactive or deleted`);
+      throw new Error(
+        `Mixeiro ${this.id} can't be locked. It's inactive or deleted`,
+      );
     }
 
     this._isLocked = true;
@@ -55,7 +57,10 @@ export class Mixeiro {
     this._isLocked = false;
   }
 
-  public isEligibleForBisno(bisno: { zoneId: string; categoryId: string }): boolean {
+  public isEligibleForBisno(bisno: {
+    zoneId: string;
+    categoryId: string;
+  }): boolean {
     return (
       this.isVerified &&
       this._isActive &&
@@ -81,7 +86,9 @@ export class Mixeiro {
 
   public verifyMixeiro(): void {
     if (!this.isActive || this.isDeleted) {
-      throw new Error(`Mixeiro ${this.id} can't be verified. It's inactive or deleted`);
+      throw new Error(
+        `Mixeiro ${this.id} can't be verified. It's inactive or deleted`,
+      );
     }
     this.verifiedAt = new Date();
   }

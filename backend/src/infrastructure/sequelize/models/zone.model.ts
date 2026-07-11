@@ -1,6 +1,6 @@
-import { Optional, DataTypes } from 'sequelize';
-import { Table, Model, Column } from 'sequelize-typescript';
-import { dbNameTables } from '@src/shared/constants/db-name-tables.js';
+import { Optional, DataTypes } from "sequelize";
+import { Table, Model, Column } from "sequelize-typescript";
+import { dbNameTables } from "@src/shared/constants/db-name-tables";
 
 interface ZoneAttributes {
   id: number;
@@ -9,7 +9,7 @@ interface ZoneAttributes {
   isActive: boolean;
 }
 
-interface ZoneCreationAttributes extends Optional<ZoneAttributes, 'id'> {}
+type ZoneCreationAttributes = Optional<ZoneAttributes, "id">;
 
 @Table({
   timestamps: false,
@@ -27,14 +27,14 @@ export class Zone extends Model<ZoneAttributes, ZoneCreationAttributes> {
   @Column({
     type: DataTypes.STRING(150),
     allowNull: false,
-    unique: "idxname"
+    unique: "idxname",
   })
   declare name: string;
 
   @Column({
     type: DataTypes.STRING(150),
     allowNull: false,
-    unique: "idxslug"
+    unique: "idxslug",
   })
   declare slug: string;
 

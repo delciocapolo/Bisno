@@ -1,7 +1,13 @@
-import { Optional, DataTypes, Sequelize } from 'sequelize';
-import { Table, Model, Column, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { dbNameTables } from '@src/shared/constants/db-name-tables.js';
-import { CategoryService } from './category-service.model.js';
+import { Optional, DataTypes, Sequelize } from "sequelize";
+import {
+  Table,
+  Model,
+  Column,
+  ForeignKey,
+  BelongsTo,
+} from "sequelize-typescript";
+import { dbNameTables } from "@src/shared/constants/db-name-tables";
+import { CategoryService } from "./category-service.model.js";
 
 interface ServiceAttributes {
   id: number;
@@ -14,14 +20,17 @@ interface ServiceAttributes {
   updatedAt: string;
 }
 
-interface ServiceCreationAttributes extends Optional<ServiceAttributes, 'id'> {}
+type ServiceCreationAttributes = Optional<ServiceAttributes, "id">;
 
 @Table({
   timestamps: false,
   underscored: true,
   tableName: dbNameTables.services,
 })
-export class Service extends Model<ServiceAttributes, ServiceCreationAttributes> {
+export class Service extends Model<
+  ServiceAttributes,
+  ServiceCreationAttributes
+> {
   @Column({
     primaryKey: true,
     allowNull: false,
@@ -32,14 +41,14 @@ export class Service extends Model<ServiceAttributes, ServiceCreationAttributes>
   @Column({
     type: DataTypes.STRING(150),
     allowNull: false,
-    unique: "idxname"
+    unique: "idxname",
   })
   declare name: string;
 
   @Column({
     type: DataTypes.STRING(150),
     allowNull: false,
-    unique: "idxslug"
+    unique: "idxslug",
   })
   declare slug: string;
 
@@ -51,7 +60,7 @@ export class Service extends Model<ServiceAttributes, ServiceCreationAttributes>
 
   @Column({
     type: DataTypes.BOOLEAN,
-    defaultValue: true
+    defaultValue: true,
   })
   declare isActive: boolean;
 

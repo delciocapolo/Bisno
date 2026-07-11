@@ -1,15 +1,18 @@
 import { jwtMiddleware } from "@src/infrastructure/auth/jwt.middleware";
-import express, { Router } from "express";
+import type express from "express";
+import { Router } from "express";
 
 const userRoutes = Router();
 
 const usersHandler = async (_req: express.Request, res: express.Response) => {
-  const users = [{ id: 1, fullname: "Delcio Capolo" }];
+  const users = await Promise.resolve([
+    { id: 1, name: "John Doe" },
+    { id: 2, name: "Jane Smith" },
+  ]);
+
   res.json(users);
 };
 
-userRoutes.get('/', jwtMiddleware, usersHandler);
+userRoutes.get("/", jwtMiddleware, usersHandler);
 
-export {
-  userRoutes
-};
+export { userRoutes };

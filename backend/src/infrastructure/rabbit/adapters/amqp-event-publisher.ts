@@ -1,9 +1,12 @@
 import Logger from "@src/infrastructure/pino/logger.js";
-import { Channel, ChannelWrapper } from "amqp-connection-manager";
-import { ExchangeKey, EXCHANGES } from "../exchanges.js";
+import type { Channel, ChannelWrapper } from "amqp-connection-manager";
+import type { ExchangeKey } from "../exchanges.js";
+import { EXCHANGES } from "../exchanges.js";
 import rabbitConnection from "../connection.js";
 
-const eventPublisherLogger = Logger.publishTo({ context: "amqp-event-publisher" });
+const eventPublisherLogger = Logger.publishTo({
+  context: "amqp-event-publisher",
+});
 
 interface AmqpEventPublishArgs {
   exchange?: ExchangeKey;
@@ -41,16 +44,26 @@ class AmqpEventPublisher {
     return this.channelWrapper;
   }
 
-  async publish({ exchange = "topic", routingKey, payload }: AmqpEventPublishArgs): Promise<void> {
+  async publish({
+    exchange = "topic",
+    routingKey,
+    payload,
+  }: AmqpEventPublishArgs): Promise<void> {
     const channelWrapper = await this.bootstrap();
     const exchangeName = EXCHANGES[exchange].name;
 
     try {
       await channelWrapper.publish(exchangeName, routingKey, payload);
-      eventPublisherLogger.info({ payload, routingKey, exchange: exchangeName }, `Payload sent to ${routingKey}`);
+      eventPublisherLogger.info(
+        { payload, routingKey, exchange: exchangeName },
+        `Payload sent to ${routingKey}`,
+      );
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
-      eventPublisherLogger.error({ payload, routingKey, exchange: exchangeName, error: message }, `Failed to publish to ${routingKey}`);
+      eventPublisherLogger.error(
+        { payload, routingKey, exchange: exchangeName, error: message },
+        `Failed to publish to ${routingKey}`,
+      );
       throw error;
     }
   }
@@ -58,4 +71,9 @@ class AmqpEventPublisher {
 
 const publisher = new AmqpEventPublisher();
 
-export { publisher, eventPublisherLogger, AmqpEventPublishArgs, AmqpEventPublisher };
+export {
+  publisher,
+  eventPublisherLogger,
+  AmqpEventPublishArgs,
+  AmqpEventPublisher,
+};

@@ -1,5 +1,12 @@
-import { BisnoCreatedPayload, DistributionStartPayload, NotificationSendPayload } from "@src/shared/events/bisno-events.js";
-import { consumer, eventConsumerLogger } from "../adapters/amqp-event-consumer.js";
+import type {
+  BisnoCreatedPayload,
+  DistributionStartPayload,
+  NotificationSendPayload,
+} from "@src/shared/events/bisno-events.js";
+import {
+  consumer,
+  eventConsumerLogger,
+} from "../adapters/amqp-event-consumer.js";
 import { publisher } from "../adapters/amqp-event-publisher.js";
 import { createBisnoUseCase } from "@src/application/use-cases/composition.js";
 import { isDefined } from "@src/shared/utils/index.js";
@@ -12,7 +19,10 @@ export async function registerConsumers(): Promise<void> {
       const bisno = await createBisnoUseCase.execute(payload);
 
       if (!isDefined(bisno)) {
-        return eventConsumerLogger.error("Failed to create bisno from payload", { payload });
+        return eventConsumerLogger.error(
+          "Failed to create bisno from payload",
+          { payload },
+        );
       }
 
       await publisher.publish({
@@ -25,12 +35,12 @@ export async function registerConsumers(): Promise<void> {
   await consumer.consume<DistributionStartPayload>({
     routingKey: "bisno.distribution.start",
     queue: "bisno.distribution.start.queue",
-    onMessage: async (payload) => {},
+    onMessage: async (_payload) => {},
   });
 
   await consumer.consume<NotificationSendPayload>({
     routingKey: "bisno.notification.send",
     queue: "bisno.notification.send.queue",
-    onMessage: async (payload) => {},
+    onMessage: async (_payload) => {},
   });
 }

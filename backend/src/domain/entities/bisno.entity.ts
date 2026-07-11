@@ -16,7 +16,9 @@ export class Bisno {
 
   markAsExhausted(): void {
     if (this.status !== "pending") {
-      throw new Error("It's only possible to mark a bisno pending as exhausted");
+      throw new Error(
+        "It's only possible to mark a bisno pending as exhausted",
+      );
     }
     this.status = "exhausted";
   }

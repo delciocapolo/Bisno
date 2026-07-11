@@ -1,3 +1,5 @@
+import { isDefined } from "@src/shared/utils";
+
 export class MixeiroHasSubcription {
   constructor(
     public readonly id: string,
@@ -22,7 +24,9 @@ export class MixeiroHasSubcription {
 
   public decrementPoints(amount: number = 1): void {
     if (this._points < amount) {
-      throw new Error(`Pontos insuficientes. Actual: ${this._points}, necessário: ${amount}`);
+      throw new Error(
+        `Pontos insuficientes. Actual: ${this._points}, necessário: ${amount}`,
+      );
     }
     this._points -= amount;
   }
@@ -47,7 +51,13 @@ export class MixeiroHasSubcription {
 
   public hasExpired(durationMs: number): boolean {
     if (!this.isActive) return true;
-    const elapsed = Date.now() - new Date(this._activatedAt!).getTime();
-    return elapsed >= durationMs;
+    const activatedAt = this._activatedAt;
+
+    if (isDefined(activatedAt)) {
+      const elapsed = Date.now() - new Date(activatedAt).getTime();
+      return elapsed >= durationMs;
+    }
+
+    return true;
   }
 }

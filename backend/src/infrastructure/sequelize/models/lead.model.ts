@@ -1,9 +1,15 @@
-import { Optional, DataTypes, Sequelize } from 'sequelize';
-import { Table, Model, Column, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { dbNameTables } from '@src/shared/constants/db-name-tables.js';
-import type { LeadStatus } from '@src/domain/entities/lead.entity.js';
-import { Bisno } from './bisno.model.js';
-import { Mixeiro } from './mixeiro.model.js';
+import { Optional, DataTypes, Sequelize } from "sequelize";
+import {
+  Table,
+  Model,
+  Column,
+  ForeignKey,
+  BelongsTo,
+} from "sequelize-typescript";
+import { dbNameTables } from "@src/shared/constants/db-name-tables";
+import type { LeadStatus } from "@src/domain/entities/lead.entity.js";
+import { Bisno } from "./bisno.model.js";
+import { Mixeiro } from "./mixeiro.model.js";
 
 interface LeadAttributes {
   id: number;
@@ -17,7 +23,7 @@ interface LeadAttributes {
   deletedAt: Date | null;
 }
 
-interface LeadCreationAttributes extends Optional<LeadAttributes, 'id'> {}
+type LeadCreationAttributes = Optional<LeadAttributes, "id">;
 
 @Table({
   timestamps: false,

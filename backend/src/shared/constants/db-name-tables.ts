@@ -1,10 +1,6 @@
-export const dbNameTables = {
-  zones: "zones",
-  categoryServices: "category_services",
-  services: "services",
-  subscriptions: "subscriptions",
-  mixeiroHasSubcription: "mixeiro_has_subcription",
-  mixeiros: "mixeiros",
-  bisnos: "bisnos",
-  leads: "leads",
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { dbNameTables } = require("./db-name-tables.cjs") as {
+  dbNameTables: Record<string, string>;
 };
+
+export { dbNameTables };

@@ -1,9 +1,15 @@
-import { Optional, DataTypes, Sequelize } from 'sequelize';
-import { Table, Model, Column, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { dbNameTables } from '@src/shared/constants/db-name-tables.js';
-import { BisnoStatusType } from '@src/domain/entities/bisno.entity.js';
-import { Zone } from './zone.model.js';
-import { Service } from './service.model.js';
+import { Optional, DataTypes, Sequelize } from "sequelize";
+import {
+  Table,
+  Model,
+  Column,
+  ForeignKey,
+  BelongsTo,
+} from "sequelize-typescript";
+import { dbNameTables } from "@src/shared/constants/db-name-tables";
+import { BisnoStatusType } from "@src/domain/entities/bisno.entity.js";
+import { Zone } from "./zone.model.js";
+import { Service } from "./service.model.js";
 
 interface BisnoAttributes {
   id: string;
@@ -20,16 +26,16 @@ interface BisnoAttributes {
   deletedAt: string | null;
 }
 
-export interface BisnoCreationAttributes extends Optional<
-  BisnoAttributes, 
-  | 'id'
-  | 'status'
-  | 'createdAt'
-  | 'updatedAt'
-  | 'deletedAt'
-  | 'distributionRound'
-  | 'description'
-  > {}
+export type BisnoCreationAttributes = Optional<
+  BisnoAttributes,
+  | "id"
+  | "status"
+  | "createdAt"
+  | "updatedAt"
+  | "deletedAt"
+  | "distributionRound"
+  | "description"
+>;
 
 @Table({
   timestamps: false,

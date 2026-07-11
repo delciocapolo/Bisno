@@ -1,6 +1,8 @@
-'use strict';
+"use strict";
 
-const { dbNameTables } = require("../../../shared/constants/db-name-tables");
+const {
+  dbNameTables,
+} = require("../../../shared/constants/db-name-tables.cjs");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -10,7 +12,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.literal('gen_random_uuid()'),
+        defaultValue: Sequelize.literal("gen_random_uuid()"),
       },
       name: {
         type: Sequelize.STRING(150),
@@ -31,5 +33,5 @@ module.exports = {
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable(dbNameTables.zones);
-  }
+  },
 };

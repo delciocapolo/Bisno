@@ -1,7 +1,9 @@
-'use strict';
+"use strict";
 
-const { dbNameTables } = require("../../../shared/constants/db-name-tables");
-const { 
+const {
+  dbNameTables,
+} = require("../../../shared/constants/db-name-tables.cjs");
+const {
   onConstraintCheckNonNegativeInteger,
   onDownConstraintCheckNonNegativeInteger,
 } = require("../utils/index");
@@ -14,7 +16,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.literal('gen_random_uuid()'),
+        defaultValue: Sequelize.literal("gen_random_uuid()"),
       },
       name: {
         type: Sequelize.STRING(150),
@@ -38,10 +40,18 @@ module.exports = {
       },
     });
 
-    await onConstraintCheckNonNegativeInteger(queryInterface, dbNameTables.subscriptions, "points");
+    await onConstraintCheckNonNegativeInteger(
+      queryInterface,
+      dbNameTables.subscriptions,
+      "points",
+    );
   },
   async down(queryInterface, Sequelize) {
-    await onDownConstraintCheckNonNegativeInteger(queryInterface, dbNameTables.subscriptions, "points");
+    await onDownConstraintCheckNonNegativeInteger(
+      queryInterface,
+      dbNameTables.subscriptions,
+      "points",
+    );
     await queryInterface.dropTable(dbNameTables.subscriptions);
-  }
+  },
 };

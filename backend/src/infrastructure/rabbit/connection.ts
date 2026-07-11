@@ -1,6 +1,7 @@
 import env from "@src/config/env.js";
 import Logger from "@src/infrastructure/pino/logger.js";
-import { AmqpConnectionManager, connect } from "amqp-connection-manager";
+import type { AmqpConnectionManager } from "amqp-connection-manager";
+import { connect } from "amqp-connection-manager";
 
 const log = Logger.publishTo({ context: "amqp" });
 
@@ -26,7 +27,9 @@ class RabbitConnection {
   }
 
   public async connect(): Promise<AmqpConnectionManager> {
-    const connection = connect(env("RABBITMQ_URI"), { reconnectTimeInSeconds: 2 });
+    const connection = connect(env("RABBITMQ_URI"), {
+      reconnectTimeInSeconds: 2,
+    });
 
     connection.on("connect", ({ url }) => {
       log.info({ message: `Connected to RabbitMQ at ${url}` });
@@ -37,7 +40,10 @@ class RabbitConnection {
     });
 
     connection.on("connectFailed", ({ err, url }) => {
-      log.error({ message: `Connection attempt to RabbitMQ failed at ${url}`, error: err?.message });
+      log.error({
+        message: `Connection attempt to RabbitMQ failed at ${url}`,
+        error: err?.message,
+      });
     });
 
     connection.on("blocked", ({ reason }) => {
@@ -49,7 +55,9 @@ class RabbitConnection {
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       await connection.close().catch(() => {});
-      throw new Error(`Failed to connect to RabbitMQ within ${this.CONNECT_TIMEOUT_MS}ms: ${message}`);
+      throw new Error(
+        `Failed to connect to RabbitMQ within ${this.CONNECT_TIMEOUT_MS}ms: ${message}`,
+      );
     }
 
     this.connection = connection;
