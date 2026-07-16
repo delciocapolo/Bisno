@@ -8,7 +8,11 @@ import {
   eventConsumerLogger,
 } from "../adapters/amqp-event-consumer.js";
 import { publisher } from "../adapters/amqp-event-publisher.js";
-import { createBisnoUseCase } from "@src/application/use-cases/composition.js";
+import {
+  createBisnoUseCase,
+  getBisnoUseCase,
+  getNextEligibleMixeiroUseCase,
+} from "@src/application/use-cases/composition.js";
 import { isDefined } from "@src/shared/utils/index.js";
 
 export async function registerConsumers(): Promise<void> {
@@ -19,15 +23,12 @@ export async function registerConsumers(): Promise<void> {
       const bisno = await createBisnoUseCase.execute(payload);
 
       if (!isDefined(bisno)) {
-        return eventConsumerLogger.error(
-          "Failed to create bisno from payload",
-          { payload },
-        );
+        return eventConsumerLogger.error({ payload }, "Failed to create bisno");
       }
 
       await publisher.publish({
         routingKey: "bisno.distribution.start",
-        payload: { bisnoId: bisno.id } satisfies DistributionStartPayload,
+        payload: [bisno],
       });
     },
   });
@@ -35,7 +36,30 @@ export async function registerConsumers(): Promise<void> {
   await consumer.consume<DistributionStartPayload>({
     routingKey: "bisno.distribution.start",
     queue: "bisno.distribution.start.queue",
-    onMessage: async (_payload) => {},
+    onMessage: async (payload) => {
+      if (Array.isArray(payload) && payload.length > 0) {
+        for (const bisno of payload) {
+          const mixeiro = await getNextEligibleMixeiroUseCase.execute({
+            serviceId: bisno.serviceId,
+            zoneId: bisno.zoneId,
+          });
+
+          if (!isDefined(mixeiro)) {
+            eventConsumerLogger.error({ bisno }, "No eligible mixeiro found");
+            return;
+          }
+        }
+      } else if ("bisnoId" in payload && isDefined(payload?.bisnoId)) {
+        const bisno = await getBisnoUseCase.execute(payload.bisnoId);
+
+        if (!isDefined(bisno)) {
+          return eventConsumerLogger.error(
+            { payload },
+            "Bisno does not exists",
+          );
+        }
+      }
+    },
   });
 
   await consumer.consume<NotificationSendPayload>({

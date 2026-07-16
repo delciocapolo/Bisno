@@ -1,4 +1,4 @@
-export type MixeiroStatusType = "whatsapp" | "mobile" | "email";
+export type IMixeiroChannel = "whatsapp" | "mobile" | "email";
 
 export class Mixeiro {
   constructor(
@@ -12,7 +12,7 @@ export class Mixeiro {
     public bi: string,
     public mobile: string,
     public hasWhatsapp: boolean,
-    public channel: MixeiroStatusType,
+    public channel: IMixeiroChannel,
     private verifiedAt: Date | null,
     private deletedAt: Date | null,
     private _isActive: boolean,

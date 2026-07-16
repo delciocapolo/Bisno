@@ -1,7 +1,11 @@
-import type { Service } from "../entities/service.entity.js";
+import type {
+  Service,
+  ServiceAttributes,
+} from "@src/infrastructure/sequelize/models/service.model.js";
+import type { FindOptions } from "sequelize";
 
 export interface ServiceRepository {
-  list: () => Promise<Service[]>;
+  list: (params?: FindOptions<ServiceAttributes>) => Promise<Service[]>;
   getById: (id: string) => Promise<Service | null>;
   getBySlug: (slug: string) => Promise<Service | null>;
   save: (

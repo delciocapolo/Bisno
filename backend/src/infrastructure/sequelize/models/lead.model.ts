@@ -35,6 +35,7 @@ export class Lead extends Model<LeadAttributes, LeadCreationAttributes> {
     primaryKey: true,
     allowNull: false,
     type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
   })
   declare id: string;
 

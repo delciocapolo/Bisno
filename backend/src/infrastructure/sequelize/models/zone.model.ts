@@ -21,6 +21,7 @@ export class Zone extends Model<ZoneAttributes, ZoneCreationAttributes> {
     primaryKey: true,
     allowNull: false,
     type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
   })
   declare id: string;
 

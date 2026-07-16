@@ -27,6 +27,7 @@ export class CategoryService extends Model<
     primaryKey: true,
     allowNull: false,
     type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
   })
   declare id: string;
 

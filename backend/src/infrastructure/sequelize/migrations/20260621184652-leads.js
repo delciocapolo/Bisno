@@ -3,6 +3,10 @@
 const {
   dbNameTables,
 } = require("../../../shared/constants/db-name-tables.cjs");
+const {
+  onUpdateRowTrigger,
+  onDownUpdateRowTrigger,
+} = require("../utils/migration-utils.cjs");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {

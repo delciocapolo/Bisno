@@ -18,9 +18,9 @@ const createBisnoHandler = async (
       routingKey: "bisno.order.created",
       payload: bisno,
     });
-    return res.status(200).json({
+    return res.status(201).json({
       data: bisno,
-      message: "Bisno received successfully",
+      message: "Bisno created successfully",
     });
   } catch (error) {
     serverLogger.error({ error }, "Error occurred while processing bisno data");
@@ -34,6 +34,10 @@ const createBisnoHandler = async (
         message: erros,
       });
     }
+    return res.status(500).json({
+      data: null,
+      message: "An unexpected error occurred while processing bisno data",
+    });
   }
 };
 

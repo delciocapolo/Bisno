@@ -1,7 +1,13 @@
-import type { Subscription } from "../entities/subscription.entity.js";
+import type {
+  Subscription,
+  SubscriptionAttributes,
+} from "@src/infrastructure/sequelize/models/subscription.model.js";
+import type { FindOptions } from "sequelize";
 
 export interface SubscriptionRepository {
-  list: () => Promise<Subscription[]>;
+  list: (
+    params: FindOptions<SubscriptionAttributes>,
+  ) => Promise<Subscription[]>;
   getPoints: (id: string) => Promise<number | null>;
   getById: (id: string) => Promise<Subscription | null>;
   getBySlug: (slug: string) => Promise<Subscription | null>;

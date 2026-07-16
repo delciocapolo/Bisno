@@ -7,6 +7,10 @@ export class SequelizeBisnoRepository implements BisnoRepository {
     return await Bisno.findAll();
   }
 
+  async getBisnoById(id: string): Promise<Bisno | null> {
+    return await Bisno.findByPk(id);
+  }
+
   async save({
     zoneId,
     serviceId,
@@ -24,6 +28,6 @@ export class SequelizeBisnoRepository implements BisnoRepository {
       description,
     });
 
-    return bisno || null;
+    return bisno;
   }
 }

@@ -3,6 +3,7 @@ import type { BisnoCreatedPayload } from "@src/shared/events/bisno-events.js";
 
 export interface BisnoRepository {
   list: () => Promise<Bisno[]>;
+  getBisnoById: (id: string) => Promise<Bisno | null>;
   save: ({
     zoneId,
     serviceId,

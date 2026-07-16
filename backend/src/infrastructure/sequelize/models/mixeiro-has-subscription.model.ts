@@ -23,15 +23,15 @@ interface MixeiroHasSubscriptionAttributes {
 
 type MixeiroHasSubscriptionCreationAttributes = Optional<
   MixeiroHasSubscriptionAttributes,
-  "id"
+  "id" | "createdAt" | "updatedAt" | "deletedAt" | "activatedAt"
 >;
 
 @Table({
   timestamps: false,
   underscored: true,
-  tableName: dbNameTables.mixeiroHasSubcription,
+  tableName: dbNameTables.mixeiroHasSubscription,
 })
-export class MixeiroHasSubscription extends Model<
+class MixeiroHasSubscription extends Model<
   MixeiroHasSubscriptionAttributes,
   MixeiroHasSubscriptionCreationAttributes
 > {
@@ -39,6 +39,7 @@ export class MixeiroHasSubscription extends Model<
     primaryKey: true,
     allowNull: false,
     type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
   })
   declare id: string;
 
@@ -51,8 +52,9 @@ export class MixeiroHasSubscription extends Model<
   declare points: number;
 
   @Column({
-    type: DataTypes.DATE,
     allowNull: true,
+    type: DataTypes.DATE,
+    defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
   })
   declare activatedAt: Date | null;
 
@@ -95,3 +97,5 @@ export class MixeiroHasSubscription extends Model<
   @BelongsTo(() => Mixeiro)
   declare mixeiro: Mixeiro;
 }
+
+export { MixeiroHasSubscriptionAttributes, MixeiroHasSubscription };

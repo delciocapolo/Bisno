@@ -16,3 +16,7 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - ./certs:/etc/letsencrypt:ro
+
+  db:
+    ports:
+      - "5432:5432"

@@ -4,12 +4,34 @@
 ### Create bisno
 POST {{baseUrl}}/bisnos/create
 Content-Type: application/json
+Accept: application/json
 
 {
   "customerName": "Délcio Capolo",
   "customerMobile": "+244923456789",
   "customerMobileHasWhatsapp": true,
-  "serviceId": "7f1b5b30-b5bf-4ea9-83e7-cef110022d2c",
-  "zoneId": "7f1b5b30-b5bf-4ea9-83e7-cef110022d2c",
-  "description": "Precisa de um canalziador com urgência"
+  "serviceId": "0a5c613c-aae6-42d0-bc70-41d5d3379d3b",
+  "zoneId": "d22b8d5c-7d12-44b3-b2b3-b7410acd3ec2",
+  "description": "Preciso trocar o visor do meu iPhone 12 Normal"
+}
+
+### List Mixeiros
+GET {{baseUrl}}/mixeiros
+Accept: application/json
+
+### Create Mixeiro
+POST {{baseUrl}}/mixeiros/create
+Content-Type: application/json
+Accept: application/json
+
+{
+  "categoryId": "a866f837-3927-4d97-8bcd-5f8133996afb",
+  "zoneId": "d22b8d5c-7d12-44b3-b2b3-b7410acd3ec2",
+  "customName": "Délcio Capolo",
+  "bi": "010278995LA047",
+  "email": "delciocapolo096@gmail.com",
+  "password": "testando",
+  "channel": "whatsapp",
+  "mobile": "+244935785831",
+  "hasWhatsapp": true
 }

@@ -8,7 +8,7 @@ const {
   onDownUpdateRowTrigger,
   onConstraintCheckNonNegativeInteger,
   onDownConstraintCheckNonNegativeInteger,
-} = require("../utils/index");
+} = require("../utils/migration-utils.cjs");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {

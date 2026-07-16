@@ -1,9 +1,9 @@
-import { Sequelize } from "sequelize-typescript";
-import env from "@src/config/env.js";
-import Logger from "@src/infrastructure/pino/logger.js";
 import path from "node:path";
+import env from "@src/config/env.js";
+import { Sequelize } from "sequelize-typescript";
+import Logger from "@src/infrastructure/pino/logger.js";
 
-const log = Logger.publishTo({ context: "sequelize" });
+const sequelizeLogger = Logger.publishTo({ context: "sequelize" });
 
 class Database {
   private static instance: Sequelize;
@@ -38,7 +38,10 @@ class Database {
         });
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
-        log.error({ error: message }, "Error configuring Sequelize instance");
+        sequelizeLogger.error(
+          { error: message },
+          "Error configuring Sequelize instance",
+        );
         throw new Error("Database configuration error");
       }
 
@@ -57,5 +60,5 @@ class Database {
 
 const dbConnection = Database.getInstance();
 
-export { Database };
+export { sequelizeLogger };
 export default dbConnection;

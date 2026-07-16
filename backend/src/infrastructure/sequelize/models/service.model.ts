@@ -20,21 +20,22 @@ interface ServiceAttributes {
   updatedAt: string;
 }
 
-type ServiceCreationAttributes = Optional<ServiceAttributes, "id">;
+type ServiceCreationAttributes = Optional<
+  ServiceAttributes,
+  "id" | "isActive" | "createdAt" | "updatedAt"
+>;
 
 @Table({
   timestamps: false,
   underscored: true,
   tableName: dbNameTables.services,
 })
-export class Service extends Model<
-  ServiceAttributes,
-  ServiceCreationAttributes
-> {
+class Service extends Model<ServiceAttributes, ServiceCreationAttributes> {
   @Column({
     primaryKey: true,
     allowNull: false,
     type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
   })
   declare id: string;
 
@@ -87,3 +88,5 @@ export class Service extends Model<
   @BelongsTo(() => CategoryService)
   declare categoryService: CategoryService;
 }
+
+export { Service, ServiceAttributes };

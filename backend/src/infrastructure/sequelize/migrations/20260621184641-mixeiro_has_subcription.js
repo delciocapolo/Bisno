@@ -8,12 +8,12 @@ const {
   onDownUpdateRowTrigger,
   onConstraintCheckNonNegativeInteger,
   onDownConstraintCheckNonNegativeInteger,
-} = require("../utils/index");
+} = require("../utils/migration-utils.cjs");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable(dbNameTables.mixeiroHasSubcription, {
+    await queryInterface.createTable(dbNameTables.mixeiroHasSubscription, {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -48,6 +48,7 @@ module.exports = {
       activated_at: {
         allowNull: true,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       created_at: {
         allowNull: false,
@@ -64,31 +65,31 @@ module.exports = {
       },
     });
 
-    await queryInterface.addIndex(dbNameTables.mixeiroHasSubcription, [
+    await queryInterface.addIndex(dbNameTables.mixeiroHasSubscription, [
       "subscription_id",
       "mixeiro_id",
     ]);
     await onConstraintCheckNonNegativeInteger(
       queryInterface,
-      dbNameTables.mixeiroHasSubcription,
+      dbNameTables.mixeiroHasSubscription,
       "points",
     );
     await onUpdateRowTrigger(
       queryInterface,
-      dbNameTables.mixeiroHasSubcription,
+      dbNameTables.mixeiroHasSubscription,
     );
   },
 
   async down(queryInterface, Sequelize) {
     await onDownConstraintCheckNonNegativeInteger(
       queryInterface,
-      dbNameTables.mixeiroHasSubcription,
+      dbNameTables.mixeiroHasSubscription,
       "points",
     );
     await onDownUpdateRowTrigger(
       queryInterface,
-      dbNameTables.mixeiroHasSubcription,
+      dbNameTables.mixeiroHasSubscription,
     );
-    await queryInterface.dropTable(dbNameTables.mixeiroHasSubcription);
+    await queryInterface.dropTable(dbNameTables.mixeiroHasSubscription);
   },
 };

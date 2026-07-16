@@ -1,25 +1,19 @@
-import type { MixeiroHasSubcription } from "../entities/mixeiro-has-subcription.entity.js";
+import type {
+  MixeiroHasSubscription,
+  MixeiroHasSubscriptionAttributes,
+} from "@src/infrastructure/sequelize/models/mixeiro-has-subscription.model";
+import type { FindOptions } from "sequelize";
 
-export interface MixeiroHasSubcriptionRepository {
-  list: () => Promise<MixeiroHasSubcription[]>;
-  getSubscription: (
-    subscriptionId: string,
-    mixeiroId: string,
-  ) => Promise<MixeiroHasSubcription | null>;
-  getCurrentPoints: (
-    subscriptionId: string,
-    mixeiroId: string,
-  ) => Promise<number | null>;
-  incrementPoints: (
-    subscriptionId: string,
-    mixeiroId: string,
-  ) => Promise<boolean>;
-  decrementPoints: (
-    subscriptionId: string,
-    mixeiroId: string,
-  ) => Promise<boolean>;
+export interface MixeiroHasSubscriptionRepository {
+  list: (
+    params?: FindOptions<MixeiroHasSubscriptionAttributes>,
+  ) => Promise<MixeiroHasSubscription[]>;
+  getSubscriptionById: (id: string) => Promise<MixeiroHasSubscription | null>;
+  getCurrentPoints: (id: string) => Promise<number | null>;
+  incrementPoints: (id: string) => Promise<boolean>;
+  decrementPoints: (id: string) => Promise<boolean>;
   save: (
-    subscriptionId: string,
+    planId: string,
     mixeiroId: string,
-  ) => Promise<MixeiroHasSubcription | null>;
+  ) => Promise<MixeiroHasSubscription | null>;
 }

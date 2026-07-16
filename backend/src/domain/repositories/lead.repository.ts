@@ -1,4 +1,4 @@
-import type { Lead } from "../entities/lead.entity.js";
+import type { Lead } from "@src/infrastructure/sequelize/models/lead.model";
 
 export interface LeadRepository {
   list: () => Promise<Lead[]>;

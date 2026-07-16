@@ -74,4 +74,5 @@ class RabbitConnection {
 }
 
 const rabbitConnection = RabbitConnection.getInstance();
+
 export default rabbitConnection;

@@ -10,14 +10,17 @@ interface SubscriptionAttributes {
   isActive: boolean;
 }
 
-type SubscriptionCreationAttributes = Optional<SubscriptionAttributes, "id">;
+type SubscriptionCreationAttributes = Optional<
+  SubscriptionAttributes,
+  "id" | "isActive"
+>;
 
 @Table({
   timestamps: false,
   underscored: true,
   tableName: dbNameTables.subscriptions,
 })
-export class Subscription extends Model<
+class Subscription extends Model<
   SubscriptionAttributes,
   SubscriptionCreationAttributes
 > {
@@ -25,6 +28,7 @@ export class Subscription extends Model<
     primaryKey: true,
     allowNull: false,
     type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
   })
   declare id: string;
 
@@ -57,3 +61,5 @@ export class Subscription extends Model<
   })
   declare isActive: boolean;
 }
+
+export { SubscriptionAttributes, Subscription };

@@ -26,7 +26,7 @@ interface BisnoAttributes {
   deletedAt: string | null;
 }
 
-export type BisnoCreationAttributes = Optional<
+type BisnoCreationAttributes = Optional<
   BisnoAttributes,
   | "id"
   | "status"
@@ -42,11 +42,12 @@ export type BisnoCreationAttributes = Optional<
   underscored: true,
   tableName: dbNameTables.bisnos,
 })
-export class Bisno extends Model<BisnoAttributes, BisnoCreationAttributes> {
+class Bisno extends Model<BisnoAttributes, BisnoCreationAttributes> {
   @Column({
     primaryKey: true,
     allowNull: false,
     type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
   })
   declare id: string;
 
@@ -129,3 +130,5 @@ export class Bisno extends Model<BisnoAttributes, BisnoCreationAttributes> {
   @BelongsTo(() => Service)
   declare service: Service;
 }
+
+export { Bisno, BisnoAttributes, BisnoCreationAttributes };

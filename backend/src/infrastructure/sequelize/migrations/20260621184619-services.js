@@ -6,7 +6,7 @@ const {
 const {
   onUpdateRowTrigger,
   onDownUpdateRowTrigger,
-} = require("../utils/index");
+} = require("../utils/migration-utils.cjs");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {

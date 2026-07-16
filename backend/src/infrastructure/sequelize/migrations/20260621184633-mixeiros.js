@@ -6,7 +6,7 @@ const {
 const {
   onDownUpdateRowTrigger,
   onUpdateRowTrigger,
-} = require("../utils/index");
+} = require("../utils/migration-utils.cjs");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -42,7 +42,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      fullname: {
+      full_name: {
         allowNull: true,
         type: Sequelize.STRING,
       },

@@ -1,16 +1,20 @@
-import type { Mixeiro, MixeiroStatusType } from "../entities/mixeiro.entity.js";
+import type {
+  Mixeiro,
+  MixeiroAttributes,
+} from "@src/infrastructure/sequelize/models/mixeiro.model";
+import type { RequiredNonNullable } from "@src/shared/@types/custom";
+import type { ICreateMixeiroPayload } from "@src/shared/events/mixeiro-events";
+import type { FindOptions } from "sequelize";
+
+type IFilterList = FindOptions<MixeiroAttributes>;
 
 export interface MixeiroRepository {
-  list: () => Promise<Mixeiro[]>;
+  list: (filters?: IFilterList) => Promise<Mixeiro[]>;
   getMixeiroById: (id: string) => Promise<Mixeiro | null>;
   getMixeiroByMobile: (mobile: string) => Promise<Mixeiro | null>;
-  save: (
-    zoneId: string,
-    categoryId: string,
-    name: string,
-    bi: string,
-    mobile: string,
-    hasWhatsapp: boolean,
-    channel: MixeiroStatusType,
+  getMixeiroByEmail: (email: string) => Promise<Mixeiro | null>;
+  getMixeiro: (
+    params: RequiredNonNullable<IFilterList, "where">,
   ) => Promise<Mixeiro | null>;
+  save: (params: ICreateMixeiroPayload) => Promise<Mixeiro | null>;
 }

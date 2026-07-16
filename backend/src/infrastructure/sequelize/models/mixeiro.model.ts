@@ -5,18 +5,20 @@ import {
   Column,
   ForeignKey,
   BelongsTo,
+  HasMany,
 } from "sequelize-typescript";
 import { dbNameTables } from "@src/shared/constants/db-name-tables";
-import { MixeiroStatusType } from "@src/domain/entities/mixeiro.entity.js";
+import { IMixeiroChannel } from "@src/domain/entities/mixeiro.entity.js";
 import { CategoryService } from "./category-service.model.js";
 import { Zone } from "./zone.model.js";
+import { MixeiroHasSubscription } from "./mixeiro-has-subscription.model.js";
 
 interface MixeiroAttributes {
   id: number;
-  categoryId: string;
   zoneId: string;
+  categoryId: string;
   customName: string;
-  fullname: string | null;
+  fullName: string | null;
   email: string;
   password: string;
   bi: string | null;
@@ -24,28 +26,38 @@ interface MixeiroAttributes {
   hasWhatsapp: boolean;
   isActive: boolean;
   isLocked: boolean;
-  channel: MixeiroStatusType;
+  channel: IMixeiroChannel;
   verifiedAt: Date | null;
   createdAt: Date;
   updatedAt: Date | null;
   deletedAt: Date | null;
 }
 
-type MixeiroCreationAttributes = Optional<MixeiroAttributes, "id">;
+type MixeiroCreationAttributes = Optional<
+  MixeiroAttributes,
+  | "id"
+  | "createdAt"
+  | "updatedAt"
+  | "deletedAt"
+  | "fullName"
+  | "verifiedAt"
+  | "isLocked"
+  | "isActive"
+  | "hasWhatsapp"
+  | "channel"
+>;
 
 @Table({
   timestamps: false,
   underscored: true,
   tableName: dbNameTables.mixeiros,
 })
-export class Mixeiro extends Model<
-  MixeiroAttributes,
-  MixeiroCreationAttributes
-> {
+class Mixeiro extends Model<MixeiroAttributes, MixeiroCreationAttributes> {
   @Column({
     primaryKey: true,
     allowNull: false,
     type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
   })
   declare id: string;
 
@@ -59,7 +71,7 @@ export class Mixeiro extends Model<
     type: DataTypes.STRING,
     allowNull: true,
   })
-  declare fullname: string | null;
+  declare fullName: string | null;
 
   @Column({
     type: DataTypes.STRING,
@@ -113,7 +125,7 @@ export class Mixeiro extends Model<
     defaultValue: "mobile",
     allowNull: false,
   })
-  declare channel: string;
+  declare channel: IMixeiroChannel;
 
   @Column({
     allowNull: true,
@@ -140,6 +152,9 @@ export class Mixeiro extends Model<
   })
   declare deletedAt: Date | null;
 
+  @HasMany(() => MixeiroHasSubscription, { foreignKey: "mixeiroId" })
+  declare mixeiroHasSubscriptions: MixeiroHasSubscription[];
+
   @ForeignKey(() => Zone)
   @Column({
     type: DataTypes.UUID,
@@ -155,8 +170,10 @@ export class Mixeiro extends Model<
     type: DataTypes.UUID,
     allowNull: false,
   })
-  declare categoryServiceId: string;
+  declare categoryId: string;
 
   @BelongsTo(() => CategoryService)
   declare categoryService: CategoryService;
 }
+
+export { Mixeiro, IMixeiroChannel, MixeiroAttributes };

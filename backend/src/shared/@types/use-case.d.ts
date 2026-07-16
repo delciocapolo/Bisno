@@ -1,3 +1,3 @@
 export abstract class UseCaseAbstract<T> {
-  abstract execute(params: Record<string, unknown>): Promise<T>;
+  abstract execute(params?: unknown): Promise<T>;
 }

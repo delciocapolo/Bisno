@@ -1,4 +1,4 @@
-import type { CategoryService } from "../entities/category-service.entity.js";
+import type { CategoryService } from "@src/infrastructure/sequelize/models/category-service.model";
 
 export interface CategoryServiceRepository {
   list: () => Promise<CategoryService[]>;
