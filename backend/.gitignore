@@ -2,6 +2,7 @@
 .env.local
 *.log
 .DS_Store
+*.todo
 
 # Directories
 dist/

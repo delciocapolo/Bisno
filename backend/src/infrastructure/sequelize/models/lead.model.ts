@@ -12,7 +12,7 @@ import { Bisno } from "./bisno.model.js";
 import { Mixeiro } from "./mixeiro.model.js";
 
 interface LeadAttributes {
-  id: number;
+  id: string;
   bisnoId: string;
   mixeiroId: string;
   notifiedAt: Date | null;
@@ -23,14 +23,23 @@ interface LeadAttributes {
   deletedAt: Date | null;
 }
 
-type LeadCreationAttributes = Optional<LeadAttributes, "id">;
+type LeadCreationAttributes = Optional<
+  LeadAttributes,
+  | "id"
+  | "createdAt"
+  | "updatedAt"
+  | "deletedAt"
+  | "notifiedAt"
+  | "respondedAt"
+  | "status"
+>;
 
 @Table({
   timestamps: false,
   underscored: true,
   tableName: dbNameTables.leads,
 })
-export class Lead extends Model<LeadAttributes, LeadCreationAttributes> {
+class Lead extends Model<LeadAttributes, LeadCreationAttributes> {
   @Column({
     primaryKey: true,
     allowNull: false,
@@ -97,3 +106,5 @@ export class Lead extends Model<LeadAttributes, LeadCreationAttributes> {
   @BelongsTo(() => Mixeiro)
   declare mixeiro: Mixeiro;
 }
+
+export { LeadAttributes, Lead };

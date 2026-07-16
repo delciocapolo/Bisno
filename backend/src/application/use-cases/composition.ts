@@ -8,12 +8,17 @@ import { GetBisnoUseCase } from "./bisnos/get-bisno.use-case.js";
 import { SequelizeMixeiroHasSubscriptionRepository } from "@src/infrastructure/sequelize/repositories/mixeiro-has-subscription.repository.impl.js";
 import { CreateMixeiroSubscriptionUseCase } from "./mixeiro-subscription/create-mixeiro-subscription.use-case.js";
 import { SequelizeServiceRepository } from "@src/infrastructure/sequelize/repositories/service.repository.impl.js";
+import { SequelizeLeadRepository } from "@src/infrastructure/sequelize/repositories/lead.repository.impl.js";
+import { CreateLeadUseCase } from "./lead/create-lead.use-case.js";
+import { GetServiceUseCase } from "./service/get-service.use-case.js";
+import { GetLeadUseCase } from "./lead/get-lead.use-case.js";
 
 const bisnoRepository = new SequelizeBisnoRepository();
 const mixeiroRepository = new SequelizeMixeiroRepository();
 const mixeiroHasSubscriptionRepository =
   new SequelizeMixeiroHasSubscriptionRepository();
 const serviceRepository = new SequelizeServiceRepository();
+const leadRepository = new SequelizeLeadRepository();
 
 // use-cases
 
@@ -34,6 +39,13 @@ const createMixeiroSubscriptionUseCase = new CreateMixeiroSubscriptionUseCase(
   mixeiroHasSubscriptionRepository,
 );
 
+// Lead
+const createLeadUseCase = new CreateLeadUseCase(leadRepository);
+const getLeadUseCase = new GetLeadUseCase(leadRepository);
+
+// Service
+const getServiceUseCase = new GetServiceUseCase(serviceRepository);
+
 export {
   createBisnoUseCase,
   getBisnoUseCase,
@@ -41,4 +53,7 @@ export {
   listMixeirosUseCase,
   getNextEligibleMixeiroUseCase,
   createMixeiroSubscriptionUseCase,
+  createLeadUseCase,
+  getServiceUseCase,
+  getLeadUseCase,
 };
