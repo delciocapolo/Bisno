@@ -15,6 +15,8 @@ import { GetLeadUseCase } from "./lead/get-lead.use-case.js";
 import { ListExpiredLeadUseCase } from "./lead/list-expired-lead.use-case.js";
 import { GetLeadByBisnoIdUseCase } from "./lead/get-lead-by-bisno-id.use-case.js";
 import { GetMixeiroByIdUseCase } from "./mixeiros/get-mixeiro-by-id.use-case.js";
+import { GetSubscriptionByMixeiroIdUseCase } from "./mixeiro-subscription/get-subscription-by-mixeiro-id.use-case.js";
+import { DecrementSubscriptionPointUseCase } from "./mixeiro-subscription/decrement-subscription-point.use-case.js";
 
 const bisnoRepository = new SequelizeBisnoRepository();
 const mixeiroRepository = new SequelizeMixeiroRepository();
@@ -42,6 +44,12 @@ const getNextEligibleMixeiroUseCase = new GetNextEligibleMixeiroUseCase(
 const createMixeiroSubscriptionUseCase = new CreateMixeiroSubscriptionUseCase(
   mixeiroHasSubscriptionRepository,
 );
+const getSubscriptionByMixeiroIdUseCase = new GetSubscriptionByMixeiroIdUseCase(
+  mixeiroHasSubscriptionRepository,
+);
+const decrementSubscriptionPointUseCase = new DecrementSubscriptionPointUseCase(
+  mixeiroHasSubscriptionRepository,
+);
 
 // Lead
 const createLeadUseCase = new CreateLeadUseCase(leadRepository);
@@ -65,4 +73,6 @@ export {
   getLeadByBisnoIdUseCase,
   listExpiredLeadUseCase,
   getMixeiroByIdUseCase,
+  getSubscriptionByMixeiroIdUseCase,
+  decrementSubscriptionPointUseCase,
 };

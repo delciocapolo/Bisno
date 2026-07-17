@@ -46,6 +46,14 @@ export class SequelizeMixeiroHasSubscriptionRepository implements MixeiroHasSubs
     return subscription?.points || null;
   }
 
+  async getSubscriptionByMixeiroId(
+    mixeiroId: string,
+  ): Promise<MixeiroHasSubscription | null> {
+    return await MixeiroHasSubscription.findOne({
+      where: { mixeiroId: mixeiroId },
+    });
+  }
+
   async incrementPoints(id: string): Promise<boolean> {
     const subscription = await MixeiroHasSubscription.findByPk(id);
 

@@ -10,6 +10,9 @@ export interface MixeiroHasSubscriptionRepository {
   ) => Promise<MixeiroHasSubscription[]>;
   getSubscriptionById: (id: string) => Promise<MixeiroHasSubscription | null>;
   getCurrentPoints: (id: string) => Promise<number | null>;
+  getSubscriptionByMixeiroId: (
+    mixeiroId: string,
+  ) => Promise<MixeiroHasSubscription | null>;
   incrementPoints: (id: string) => Promise<boolean>;
   decrementPoints: (id: string) => Promise<boolean>;
   save: (

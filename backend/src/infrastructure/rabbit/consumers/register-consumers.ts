@@ -7,12 +7,14 @@ import { publisher } from "../adapters/amqp-event-publisher.js";
 import {
   createBisnoUseCase,
   createLeadUseCase,
+  decrementSubscriptionPointUseCase,
   getBisnoUseCase,
   getLeadByBisnoIdUseCase,
   getLeadUseCase,
   getMixeiroByIdUseCase,
   getNextEligibleMixeiroUseCase,
   getServiceUseCase,
+  getSubscriptionByMixeiroIdUseCase,
   listMixeirosUseCase,
 } from "@src/application/use-cases/composition.js";
 import { isDefined } from "@src/shared/utils/index.js";
@@ -289,7 +291,18 @@ export async function registerConsumers(): Promise<void> {
         return eventConsumerLogger.error({ payload }, "Mixeiro not found");
       }
 
-      // TODO: estamos em: bisno.points.decrement
+      const subscription = await getSubscriptionByMixeiroIdUseCase.execute(
+        mixeiro.id,
+      );
+
+      if (!isDefined(subscription)) {
+        return eventConsumerLogger.error(
+          { mixeiro },
+          "Error while processing Mixeiro's subscription",
+        );
+      }
+
+      await decrementSubscriptionPointUseCase.execute(subscription.id);
     },
   });
 }
