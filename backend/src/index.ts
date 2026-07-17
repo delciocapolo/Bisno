@@ -1,10 +1,11 @@
 import "dotenv/config";
-import dbConnection from "./infrastructure/sequelize/connection.js";
-import Logger from "./infrastructure/pino/logger.js";
-import env from "./config/env.js";
-import rabbitConnection from "./infrastructure/rabbit/connection.js";
-import { server } from "./infrastructure/express/server.js";
-import { registerConsumers } from "@src/infrastructure/rabbit/consumers/register-consumers.js";
+import dbConnection from "./infrastructure/sequelize/connection";
+import Logger from "./infrastructure/pino/logger";
+import env from "./config/env";
+import rabbitConnection from "./infrastructure/rabbit/connection";
+import { server } from "./infrastructure/express/server";
+import { registerConsumers } from "@src/infrastructure/rabbit/consumers/register-consumers";
+import { expiredLeadsTask } from "./application/jobs/scheduler";
 
 async function bootstrap() {
   await dbConnection.authenticate();
@@ -12,6 +13,7 @@ async function bootstrap() {
 
   await rabbitConnection.connect();
   await registerConsumers();
+  await expiredLeadsTask.execute();
 
   if (env("NODE_ENV") !== "production" && env("NODE_ENV") !== "prod") {
     process.on("unhandledRejection", (reason) => {

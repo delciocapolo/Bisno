@@ -8,9 +8,9 @@ export class SequelizeLeadRepository implements LeadRepository {
   async list(params?: FindOptions<LeadAttributes>): Promise<Lead[]> {
     return await Lead.findAll({
       where: params?.where,
-      include: params?.include,
       order: params?.order,
       limit: params?.limit,
+      include: params?.include,
       attributes: params?.attributes,
     });
   }

@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import { createServer } from "node:http";
 import { setupSwagger } from "../swagger/setup.js";
 import { userRoutes } from "./routes/users/index.js";
 import { healthRoutes } from "./routes/health/index.js";
@@ -9,19 +10,20 @@ import Logger from "../pino/logger.js";
 import { mixeiroRoutes } from "./routes/mixeiros/index.js";
 import { mixeiroSubscriptionRoutes } from "./routes/mixeiros-subscription/index.js";
 
-const server = express();
+const app = express();
+const server = createServer(app);
 const serverLogger = Logger.publishTo({ context: "server" });
 
-server.use(cors());
-server.use(helmet());
-server.use(express.json());
+app.use(cors());
+app.use(helmet());
+app.use(express.json());
 
 // routes
-setupSwagger(server);
-server.use("/api/users", userRoutes);
-server.use("/api/bisnos", bisnoRoutes);
-server.use("/api/mixeiros", mixeiroRoutes);
-server.use("/api/mixeiro-subscriptions", mixeiroSubscriptionRoutes);
-server.use("/api/health", healthRoutes);
+setupSwagger(app);
+app.use("/api/users", userRoutes);
+app.use("/api/bisnos", bisnoRoutes);
+app.use("/api/mixeiros", mixeiroRoutes);
+app.use("/api/mixeiro-subscriptions", mixeiroSubscriptionRoutes);
+app.use("/api/health", healthRoutes);
 
 export { server, serverLogger };

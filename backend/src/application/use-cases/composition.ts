@@ -12,6 +12,9 @@ import { SequelizeLeadRepository } from "@src/infrastructure/sequelize/repositor
 import { CreateLeadUseCase } from "./lead/create-lead.use-case.js";
 import { GetServiceUseCase } from "./service/get-service.use-case.js";
 import { GetLeadUseCase } from "./lead/get-lead.use-case.js";
+import { ListExpiredLeadUseCase } from "./lead/list-expired-lead.use-case.js";
+import { GetLeadByBisnoIdUseCase } from "./lead/get-lead-by-bisno-id.use-case.js";
+import { GetMixeiroByIdUseCase } from "./mixeiros/get-mixeiro-by-id.use-case.js";
 
 const bisnoRepository = new SequelizeBisnoRepository();
 const mixeiroRepository = new SequelizeMixeiroRepository();
@@ -28,6 +31,7 @@ const getBisnoUseCase = new GetBisnoUseCase(bisnoRepository);
 
 // Mixeiro
 const createMixeiroUseCase = new CreateMixeiroUseCase(mixeiroRepository);
+const getMixeiroByIdUseCase = new GetMixeiroByIdUseCase(mixeiroRepository);
 const listMixeirosUseCase = new ListMixeirosUseCase(mixeiroRepository);
 const getNextEligibleMixeiroUseCase = new GetNextEligibleMixeiroUseCase(
   mixeiroRepository,
@@ -42,6 +46,8 @@ const createMixeiroSubscriptionUseCase = new CreateMixeiroSubscriptionUseCase(
 // Lead
 const createLeadUseCase = new CreateLeadUseCase(leadRepository);
 const getLeadUseCase = new GetLeadUseCase(leadRepository);
+const getLeadByBisnoIdUseCase = new GetLeadByBisnoIdUseCase(leadRepository);
+const listExpiredLeadUseCase = new ListExpiredLeadUseCase(leadRepository);
 
 // Service
 const getServiceUseCase = new GetServiceUseCase(serviceRepository);
@@ -56,4 +62,7 @@ export {
   createLeadUseCase,
   getServiceUseCase,
   getLeadUseCase,
+  getLeadByBisnoIdUseCase,
+  listExpiredLeadUseCase,
+  getMixeiroByIdUseCase,
 };
