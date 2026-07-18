@@ -15,6 +15,8 @@ services:
     depends_on:
       app:
         condition: service_healthy
+      evolution-api:
+        condition: service_healthy
     networks:
       - bisno_network
 
@@ -28,7 +30,7 @@ services:
     env_file:
       - ../.env
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:${SERVER_PORT}/api/health"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:${APP_PORT}/api/health"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -96,6 +98,32 @@ services:
     networks:
       - bisno_network
 
+  evolution-api:
+    image: evoapicloud/evolution-api:v2.3.7
+    container_name: bisno_evolution_api
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    env_file:
+      - ../.env
+    volumes:
+      - evolution_instances:/evolution/instances
+    networks:
+      - bisno_network
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "${SERVER_URL}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
 networks:
   bisno_network:
     driver: bridge
@@ -104,3 +132,4 @@ volumes:
   db_data:
   redis_data:
   rabbitmq_data:
+  evolution_instances:

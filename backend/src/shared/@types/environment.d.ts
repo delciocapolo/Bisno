@@ -1,9 +1,13 @@
 export interface IEnvironment {
-  SERVER_PORT: number;
-  SERVER_HOST: string;
+  APP_PORT: number;
+  APP_HOST: string;
   NODE_ENV: "development" | "production";
   TIMEZONE: string;
   JWT_SECRET: string;
+
+  // Evolution
+  SERVER_URL: string;
+  AUTHENTICATION_API_KEY: string;
 
   // rabbit
   RABBITMQ_URI: string;

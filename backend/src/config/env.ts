@@ -4,8 +4,8 @@ import type { IEnvironment } from "../shared/@types/environment";
 type IEnvironmentKeys = keyof IEnvironment;
 
 const envDefault: Partial<IEnvironment> = {
-  SERVER_PORT: getSafeInteger(process.env.SERVER_PORT) || 3000,
-  SERVER_HOST: process.env.SERVER_HOST || "localhost",
+  APP_PORT: getSafeInteger(process.env.APP_PORT) || 3000,
+  APP_HOST: process.env.APP_HOST || "localhost",
   NODE_ENV: (process.env.NODE_ENV as IEnvironment["NODE_ENV"]) || "development",
   TIMEZONE: process.env.TIMEZONE || "Africa/Luanda",
   RABBITMQ_URI: process.env.RABBITMQ_URI || "",
@@ -15,6 +15,7 @@ const envDefault: Partial<IEnvironment> = {
   DB_HOST: process.env.DB_HOST || "localhost",
   DB_USER: process.env.DB_USER || "root",
   DB_PASSWORD: process.env.DB_PASSWORD || "root",
+  SERVER_URL: process.env.SERVER_URL || "http://evolution-api:8080",
 };
 
 function env(name: IEnvironmentKeys): string {
