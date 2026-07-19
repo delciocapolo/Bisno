@@ -5,18 +5,23 @@ import { server } from "../express/server";
 import { computeUserIdFromHeaders } from "./utils";
 import { bisnoMixeiroAcceptEvent } from "./listeners/bisno-mixeiro-accept.event";
 
-const io = new Server(server);
-const socketLogger = Logger.publishTo({ context: "socket" });
+const appSocket = new Server(server, {
+  cors: { origin: "*" },
+});
+const socketLogger = Logger.publishTo({
+  context: "socket",
+});
 
 // ============================================================
 
-io.on("connection", async (socket) => {
+appSocket.on("connection", async (socket) => {
+  console.log("ENTROU");
   const userId = computeUserIdFromHeaders(socket.handshake.auth);
   await socket.join(userId);
 
   socket.on(ROOMS.bisno.mixeiro.accept, bisnoMixeiroAcceptEvent);
 
-  io.to(userId).emit("foo", "Testando...");
+  appSocket.to(userId).emit("foo", "Testando...");
 });
 
-export { io, socketLogger };
+export { appSocket, socketLogger };

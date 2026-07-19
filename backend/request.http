@@ -25,8 +25,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "categoryId": "a866f837-3927-4d97-8bcd-5f8133996afb",
-  "zoneId": "d22b8d5c-7d12-44b3-b2b3-b7410acd3ec2",
+  "categoryId": "3fa64264-9276-4517-98b0-c2030c1d9b27",
+  "zoneId": "e5e58099-3f66-44f8-89db-bbe2b0d9f833",
   "customName": "Délcio Capolo",
   "bi": "010278995LA047",
   "email": "delciocapolo096@gmail.com",

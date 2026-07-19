@@ -1,23 +1,30 @@
 import env from "@src/config/env";
 import { io as SocketClient } from "socket.io-client";
-import { socketLogger } from "../socketio/server";
 
 const evolutionSocket = SocketClient(env("SERVER_URL"), {
   auth: { apiKey: env("AUTHENTICATION_API_KEY") },
-  reconnection: true,
-  reconnectionDelay: 2000,
-  reconnectionAttempts: 10,
   transports: ["websocket", "polling"],
+  reconnection: true,
+  reconnectionAttempts: 8,
+  reconnectionDelay: 3000,
+  timeout: 10000,
 });
 
-// ============================================================
+console.log("Log: ", env("SERVER_URL"), env("AUTHENTICATION_API_KEY"));
 
 evolutionSocket.on("connect", () => {
-  socketLogger.info("✅ Connected to Evolution API");
+  console.log("✅ Successfully connected to Evolution API WebSocket");
 });
 
-evolutionSocket.on("connect_error", (err) => {
-  socketLogger.error("Evolution connection error:", err.message);
+evolutionSocket.on("connect_error", (err: any) => {
+  console.error("❌ Evolution Connection Error:", {
+    message: err.message,
+    description: err.description,
+    type: err.type,
+    data: err.data,
+  });
 });
 
-export { evolutionSocket };
+evolutionSocket.on("disconnect", (reason) => {
+  console.warn("⚠️ Evolution disconnected:", reason);
+});

@@ -49,9 +49,10 @@ const createMixeiroHandler = async (
     });
   } catch (error) {
     serverLogger.error(
-      { error },
+      { error: (error as Error).message },
       "Error occurred while processing mixeiro data",
     );
+
     if (error instanceof z.ZodError) {
       const erros = error.issues.map((issue) => ({
         field: issue?.path?.at(0),

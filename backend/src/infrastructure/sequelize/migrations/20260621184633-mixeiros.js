@@ -47,8 +47,8 @@ module.exports = {
         type: Sequelize.STRING,
       },
       email: {
+        unique: true,
         allowNull: false,
-        unique: "idxemail",
         type: Sequelize.STRING,
       },
       password: {
@@ -56,12 +56,13 @@ module.exports = {
         type: Sequelize.STRING,
       },
       bi: {
+        unique: true,
         allowNull: true,
         type: Sequelize.STRING,
       },
       mobile: {
         allowNull: false,
-        unique: "idxmobile",
+        unique: true,
         type: Sequelize.STRING(15),
       },
       has_whatsapp: {
@@ -103,7 +104,7 @@ module.exports = {
       },
     });
 
-    await queryInterface.addIndex(dbNameTables.mixeiros, ["bi"]);
+    // await queryInterface.addIndex(dbNameTables.mixeiros, ["bi"]);
     await onUpdateRowTrigger(queryInterface, dbNameTables.mixeiros);
   },
 

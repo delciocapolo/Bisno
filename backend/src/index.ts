@@ -4,6 +4,8 @@ import Logger from "./infrastructure/pino/logger";
 import env from "./config/env";
 import rabbitConnection from "./infrastructure/rabbit/connection";
 import { server } from "./infrastructure/express/server";
+import "@infrastructure/socketio/server";
+import "@infrastructure/evolution-api/server";
 import { registerConsumers } from "@src/infrastructure/rabbit/consumers/register-consumers";
 import { expiredLeadsTask } from "./application/jobs/scheduler";
 

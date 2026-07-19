@@ -74,9 +74,9 @@ class Mixeiro extends Model<MixeiroAttributes, MixeiroCreationAttributes> {
   declare fullName: string | null;
 
   @Column({
-    type: DataTypes.STRING,
-    unique: "idxemail",
+    unique: true,
     allowNull: false,
+    type: DataTypes.STRING,
   })
   declare email: string;
 
@@ -87,15 +87,16 @@ class Mixeiro extends Model<MixeiroAttributes, MixeiroCreationAttributes> {
   declare password: string;
 
   @Column({
-    type: DataTypes.STRING,
+    unique: true,
     allowNull: true,
+    type: DataTypes.STRING,
   })
   declare bi: string | null;
 
   @Column({
-    type: DataTypes.STRING(15),
-    unique: "idxmobile",
+    unique: true,
     allowNull: false,
+    type: DataTypes.STRING(15),
   })
   declare mobile: string;
 
