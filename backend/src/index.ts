@@ -7,15 +7,13 @@ import { server } from "./infrastructure/express/server";
 import "@infrastructure/socketio/server";
 import "@infrastructure/evolution-api/server";
 import { registerConsumers } from "@src/infrastructure/rabbit/consumers/register-consumers";
-import { expiredLeadsTask } from "./application/jobs/scheduler";
+import { registerSchedulers } from "./application/jobs/scheduler";
 
 async function bootstrap() {
-  await dbConnection.authenticate();
-  Logger.info({ message: "Database connection established" });
-
+  await dbConnection.connect();
   await rabbitConnection.connect();
   await registerConsumers();
-  await expiredLeadsTask.execute();
+  await registerSchedulers();
 
   if (env("NODE_ENV") !== "production" && env("NODE_ENV") !== "prod") {
     process.on("unhandledRejection", (reason) => {

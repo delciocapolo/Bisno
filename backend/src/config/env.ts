@@ -15,6 +15,7 @@ const envDefault: Partial<IEnvironment> = {
   DB_HOST: process.env.DB_HOST || "localhost",
   DB_USER: process.env.DB_USER || "root",
   DB_PASSWORD: process.env.DB_PASSWORD || "root",
+  SERVER_HOST: process.env.SERVER_HOST || "evolution-api",
   SERVER_URL: process.env.SERVER_URL || "http://evolution-api:8080",
 };
 

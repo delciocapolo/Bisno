@@ -7,6 +7,7 @@ export interface IEnvironment {
 
   // Evolution
   SERVER_URL: string;
+  SERVER_HOST: string;
   AUTHENTICATION_API_KEY: string;
 
   // rabbit

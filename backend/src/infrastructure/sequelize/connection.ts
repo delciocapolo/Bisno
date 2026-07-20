@@ -56,9 +56,14 @@ class Database {
 
     return Database.instance;
   }
+
+  public static async connect(): Promise<void> {
+    await Database.getInstance().authenticate();
+    sequelizeLogger.info({ message: "Database connection established" });
+  }
 }
 
-const dbConnection = Database.getInstance();
+const dbConnection = Database;
 
 export { sequelizeLogger };
 export default dbConnection;
