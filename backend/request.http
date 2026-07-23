@@ -10,8 +10,8 @@ Accept: application/json
   "customerName": "Délcio Capolo",
   "customerMobile": "+244923456789",
   "customerMobileHasWhatsapp": true,
-  "serviceId": "0a5c613c-aae6-42d0-bc70-41d5d3379d3b",
-  "zoneId": "d22b8d5c-7d12-44b3-b2b3-b7410acd3ec2",
+  "serviceId": "b800ed03-6ba4-48bd-86a9-9e696e604797",
+  "zoneId": "c7c39fdc-1247-416b-a245-2802147e2a0f",
   "description": "Preciso trocar o visor do meu iPhone 12 Normal"
 }
 

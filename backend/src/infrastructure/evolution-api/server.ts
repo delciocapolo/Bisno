@@ -1,6 +1,7 @@
 import env from "@src/config/env";
 import { io as SocketClient } from "socket.io-client";
 import Logger from "../pino/logger";
+import { mixeiroAcceptBisnoEvent } from "../socketio/listeners/mixeiro-accept-bisno.event";
 
 const SERVER_URL = env("SERVER_URL");
 const API_KEY = env("AUTHENTICATION_API_KEY");
@@ -39,10 +40,28 @@ evolutionSocket.on("disconnect", (reason) => {
   }
 });
 
-// Listen to Evolution events (example)
-evolutionSocket.onAny((eventName, ...args) => {
-  console.log(
-    `📨 Event received: ${eventName}`,
-    args.length > 0 ? args[0] : null,
-  );
+evolutionSocket.on("messages.update", (data: any) => {
+  evolutionApiLogger.info({ data }, "messages.update received");
+
+  const status = data?.data?.[0]?.update?.status || data?.status;
+  if (status === "ERROR") {
+    evolutionApiLogger.error({ data }, "Message failed to send (ERROR status)");
+  }
 });
+
+evolutionSocket.on("message.error", (data: any) => {
+  evolutionApiLogger.error({ data }, "Message error event");
+});
+
+evolutionSocket.on("messages.upsert", mixeiroAcceptBisnoEvent);
+
+if (env("NODE_ENV") == "development") {
+  evolutionSocket.onAny((eventName, ...args) => {
+    console.log(
+      `📨 Event received: ${eventName}`,
+      args.length > 0 ? args[0] : null,
+    );
+  });
+}
+
+export { evolutionSocket, evolutionApiLogger };

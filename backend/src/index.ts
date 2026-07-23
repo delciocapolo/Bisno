@@ -3,7 +3,7 @@ import dbConnection from "./infrastructure/sequelize/connection";
 import Logger from "./infrastructure/pino/logger";
 import env from "./config/env";
 import rabbitConnection from "./infrastructure/rabbit/connection";
-import { server } from "./infrastructure/express/server";
+import { server, serverLogger } from "./infrastructure/express/server";
 import "@infrastructure/socketio/server";
 import "@infrastructure/evolution-api/server";
 import { registerConsumers } from "@src/infrastructure/rabbit/consumers/register-consumers";
@@ -22,7 +22,7 @@ async function bootstrap() {
   }
 
   server.listen(env("APP_PORT"), () =>
-    Logger.info({
+    serverLogger.info({
       port: env("APP_PORT"),
       host: env("APP_HOST"),
       message: `Server is running`,

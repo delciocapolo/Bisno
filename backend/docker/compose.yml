@@ -99,7 +99,7 @@ services:
       - bisno_network
 
   evolution-api:
-    image: evoapicloud/evolution-api:v2.3.7
+    image: evoapicloud/evolution-api:2.4.0-rc2
     container_name: bisno_evolution_api
     restart: unless-stopped
     ports:

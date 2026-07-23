@@ -10,7 +10,7 @@ import {
   decrementSubscriptionPointUseCase,
   getBisnoUseCase,
   getLeadByBisnoIdUseCase,
-  getLeadUseCase,
+  getLeadByIdUseCase,
   getMixeiroByIdUseCase,
   getNextEligibleMixeiroUseCase,
   getServiceUseCase,
@@ -18,8 +18,23 @@ import {
   listMixeirosUseCase,
 } from "@src/application/use-cases/composition.js";
 import { isDefined } from "@src/shared/utils/index.js";
-import type { LeadAttributes } from "@src/infrastructure/sequelize/models/lead.model.js";
-import type { BisnoAttributes } from "@src/infrastructure/sequelize/models/bisno.model.js";
+import {
+  Lead,
+  type LeadAttributes,
+} from "@src/infrastructure/sequelize/models/lead.model.js";
+import {
+  Bisno,
+  type BisnoAttributes,
+} from "@src/infrastructure/sequelize/models/bisno.model.js";
+import { Service } from "@src/infrastructure/sequelize/models/service.model.js";
+import { Zone } from "@src/infrastructure/sequelize/models/zone.model.js";
+import {
+  sendTextMessageAboutBisno,
+  sendTextMessageBisnoClosedToClient,
+  sendTextMessageBisnoClosedToMixeiro,
+} from "@src/infrastructure/evolution-api/http/send-text-message.js";
+import { EVOLUTION_INSTANCE_NAMES } from "@src/infrastructure/evolution-api/instances/names.js";
+import { Mixeiro } from "@src/infrastructure/sequelize/models/mixeiro.model.js";
 
 export async function registerConsumers(): Promise<void> {
   await consumer.consume<BisnoCreatedPayload>({
@@ -95,11 +110,29 @@ export async function registerConsumers(): Promise<void> {
     queue: "bisno.notification.send.queue",
     onMessage: async (payload) => {
       for (const lead of payload) {
-        // TODO: resolver a logica/algoritmo de envio de mensagem ao Mixeiro sobre o Bisno
-        await publisher.publish({
-          routingKey: "bisno.order.distributed",
-          payload: [lead],
+        const leadFound = await getLeadByIdUseCase.execute(lead.id);
+        const bisno = await Bisno.findByPk(lead.bisnoId, {
+          include: [{ model: Service }, { model: Zone }],
         });
+        const mixeiro = await getMixeiroByIdUseCase.execute(lead?.mixeiroId);
+
+        if (isDefined(leadFound) && isDefined(bisno) && isDefined(mixeiro)) {
+          await sendTextMessageAboutBisno(
+            mixeiro?.mobile,
+            EVOLUTION_INSTANCE_NAMES.mainInstance.name,
+            {
+              zoneName: bisno?.zone?.name,
+              description: bisno?.description,
+              serviceName: bisno?.service?.name,
+              mixeiroName: mixeiro?.customName || mixeiro?.fullName,
+            },
+          );
+          await leadFound.update({ notifiedAt: new Date() });
+          await publisher.publish({
+            routingKey: "bisno.order.distributed",
+            payload: [lead],
+          });
+        }
       }
     },
   });
@@ -124,7 +157,7 @@ export async function registerConsumers(): Promise<void> {
           },
         });
 
-        if (mixeirosUnlocked?.length >= mixeirosLocked?.length) {
+        if (mixeirosLocked?.length >= mixeirosUnlocked?.length) {
           for (const mixeiro of mixeirosLocked) {
             await mixeiro.update({ isLocked: false });
           }
@@ -144,7 +177,7 @@ export async function registerConsumers(): Promise<void> {
     onMessage: async (payload) => {
       for (const lead of payload) {
         const bisno = await getBisnoUseCase.execute(lead.bisnoId);
-        const leadFound = await getLeadUseCase.execute(lead.id);
+        const leadFound = await getLeadByIdUseCase.execute(lead.id);
 
         if (!isDefined(bisno)) {
           return eventConsumerLogger.error(
@@ -203,7 +236,7 @@ export async function registerConsumers(): Promise<void> {
         }
 
         await bisno.update({ status: "exhausted" });
-        const leadFound = await getLeadUseCase.execute(lead.id);
+        const leadFound = await getLeadByIdUseCase.execute(lead.id);
 
         if (!isDefined(leadFound)) {
           return eventConsumerLogger.error({ lead }, `Lead not found`);
@@ -236,9 +269,7 @@ export async function registerConsumers(): Promise<void> {
 
         if (isDefined(mixeiro)) {
           const lead = await getLeadByBisnoIdUseCase.execute(bisno.id);
-          await lead?.update({
-            mixeiroId: mixeiro.id,
-          });
+          await lead?.update({ mixeiroId: mixeiro.id });
           await publisher.publish({
             routingKey: "bisno.notification.send",
             payload: [lead],
@@ -262,22 +293,51 @@ export async function registerConsumers(): Promise<void> {
     },
   });
 
-  await consumer.consume<LeadAttributes[]>({
+  await consumer.consume<{
+    leadId: string;
+    bisnoId: string;
+    mixeiroId: string;
+  }>({
     routingKey: "bisno.order.accepted",
     queue: "bisno.order.accepted.queue",
     onMessage: async (payload) => {
-      for (const lead of payload) {
-        const bisno = await getBisnoUseCase.execute(lead.bisnoId);
-        const leadFound = await getLeadUseCase.execute(lead.id);
+      const lead = await Lead.findByPk(payload.leadId, {
+        include: [Bisno, Mixeiro],
+      });
 
-        await bisno?.update({ status: "done" });
-        await leadFound?.update({ status: "accepted" });
-        await publisher.publish({
-          routingKey: "bisno.points.decrement",
-          payload: { mixeiroId: lead.mixeiroId },
-        });
-        // TODO: send notification to client about lead closed
+      if (!isDefined(lead)) {
+        return eventConsumerLogger.error({ payload }, "Lead not found");
       }
+
+      await lead.bisno.update({ status: "done" });
+      await lead.update({ status: "accepted" });
+      await publisher.publish({
+        routingKey: "bisno.points.decrement",
+        payload: { mixeiroId: payload.mixeiroId },
+      });
+
+      await Promise.all([
+        sendTextMessageBisnoClosedToMixeiro(
+          lead.mixeiro.mobile,
+          EVOLUTION_INSTANCE_NAMES.mainInstance.name,
+          {
+            mixeiroName: lead.mixeiro.customName,
+            customerName: lead.bisno.customerName,
+            customerMobile: lead.bisno.customerMobile,
+            serviceName: lead.bisno.service.name,
+            zoneName: lead.bisno.zone.name,
+          },
+        ),
+        sendTextMessageBisnoClosedToClient(
+          lead.bisno.customerMobile,
+          EVOLUTION_INSTANCE_NAMES.mainInstance.name,
+          {
+            customerName: lead.bisno.customerName,
+            mixeiroName: lead.mixeiro.customName,
+            serviceName: lead.bisno.service.name,
+          },
+        ),
+      ]);
     },
   });
 

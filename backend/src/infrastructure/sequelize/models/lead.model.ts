@@ -55,7 +55,7 @@ class Lead extends Model<LeadAttributes, LeadCreationAttributes> {
   declare notifiedAt: Date | null;
 
   @Column({
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.DATE,
   })
   declare respondedAt: Date | null;
