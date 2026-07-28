@@ -128,6 +128,9 @@
 
   /* Configs */
   --header-height: 90px;
+
+  /* Auxiliares */
+  --accent-900: oklch(67.409% 0.19094 42.845);
 }
 
 .dark {

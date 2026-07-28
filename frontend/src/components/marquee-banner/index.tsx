@@ -1,4 +1,5 @@
 import { cn } from "@src/lib/utils";
+import { Fragment } from "react";
 
 const textMarquee = [
   "Já há alguém na tua zona",
@@ -16,22 +17,25 @@ export default function MarqueeBanner() {
           to   { transform: translateX(-50%); }
         }
         .marquee-track {
-          animation: marqueeScroll 14s linear infinite;
+          animation: marqueeScroll 25s linear infinite;
         }
       `}</style>
 
       <div
         className={cn(
           "flex whitespace-nowrap w-max marquee-track gap-3",
-          "text-body-14 font-black font-heading uppercase tracking-wide text-primary",
+          "text-body-14 font-black font-heading uppercase tracking-wider text-primary",
         )}
       >
-        {textMarquee.map((text, index) => (
-          <>
-            <span key={index}>{text}</span>
-            <span className="text-[#c0910f] text-body-18">✳</span>
-          </>
-        ))}
+        {/* Duplicado 2x — é o que permite o -50% "fechar o círculo" sem salto visível */}
+        {[...textMarquee, ...textMarquee, ...textMarquee, ...textMarquee].map(
+          (text, index) => (
+            <Fragment key={index}>
+              <span>{text}</span>
+              <span className="text-[#c0910f] text-body-18">✳</span>
+            </Fragment>
+          ),
+        )}
       </div>
     </div>
   );

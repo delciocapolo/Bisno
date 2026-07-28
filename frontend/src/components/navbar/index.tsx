@@ -20,7 +20,7 @@ export default function Navbar() {
               </Link>
               <Link
                 to={"/bisno"}
-                className="bg-primary text-body-16 leading-10 px-5 text-headline-24 font-heading font-normal uppercase text-background tracking-wide"
+                className="bg-primary text-body-16 leading-11 px-5 text-headline-24 font-heading font-normal uppercase text-background tracking-wide"
               >
                 Preciso de algo
               </Link>

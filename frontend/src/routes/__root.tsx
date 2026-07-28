@@ -9,8 +9,6 @@ import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import appCss from "../styles.css?url";
 import type { QueryClient } from "@tanstack/react-query";
 import { ThemeProvider } from "@src/integrations/theme/provider";
-import Navbar from "@src/components/navbar";
-import Footer from "@src/components/footer";
 
 interface RouterContext {
   queryClient: QueryClient;
@@ -42,9 +40,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <ThemeProvider>
-          <Navbar />
           {children}
-          <Footer />
 
           <TanStackDevtools
             config={{ position: "bottom-right" }}
