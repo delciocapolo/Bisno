@@ -58,22 +58,22 @@ function Home() {
             <FadeTicker />
 
             <div className="font-heading uppercase text-background">
-              <h1 className="text-[clamp(2.65rem,6.75vw,8rem)] leading-27 max-lg:leading-12 tracking-wide">
+              <h1 className="text-[clamp(2.65rem,5.75vw,8rem)] leading-25 max-lg:leading-12 tracking-wide">
                 Precisas de algo?
               </h1>
-              <h1 className="flex gap-5 text-[clamp(2.45rem,6vw,7rem)] leading-27 max-lg:leading-12 max-lg:gap-3">
+              <h1 className="flex gap-5 text-[clamp(2.45rem,5vw,7rem)] leading-25 max-lg:leading-12 max-lg:gap-3">
                 <div className="bg-background px-3 max-lg:px-2">
                   <span className="text-primary">ha mixeiro</span>
                 </div>
                 na tua
               </h1>
-              <h1 className="text-[clamp(2.65rem,6vw,7rem)] leading-25 max-lg:leading-12">
+              <h1 className="text-[clamp(2.65rem,5vw,7rem)] leading-23 max-lg:leading-12">
                 Zona.
               </h1>
             </div>
 
             <div className="max-w-2/5 max-lg:max-w-full">
-              <p className="font-sans text-headline-24 font-normal text-gray-900 max-lg:text-headline-32 max-lg:font-medium max-lg:font-sans">
+              <p className="font-sans text-headline-20 font-normal text-gray-900 max-lg:text-headline-32 max-lg:font-medium max-lg:font-sans">
                 Diz o que precisas, a Bisno passa o teu pedido ao mixeiro certo
                 e ele liga-te no WhatsApp. Sem contas, sem complicações.
               </p>
