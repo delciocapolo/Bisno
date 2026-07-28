@@ -1,0 +1,115 @@
+@reference "tailwindcss";
+
+/* anton-latin-400-normal */
+@font-face {
+  font-family: "Anton";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src:
+    url(@fontsource/anton/files/anton-latin-400-normal.woff2) format("woff2"),
+    url(@fontsource/anton/files/anton-latin-400-normal.woff) format("woff");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+/* archivo-latin-wght-normal */
+@font-face {
+  font-family: "Archivo Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2)
+    format("woff2-variations");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  --font-heading: "Anton";
+  --font-sans: "Archivo Variable";
+}
+
+@utility text-display-80 {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 15.56vw, 5rem);
+  font-weight: bold;
+}
+
+@utility text-display-72 {
+  font-family: var(--font-heading);
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  font-weight: bold;
+}
+
+@utility text-headline-64 {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4.44vw, 4rem);
+  font-weight: bold;
+}
+
+@utility text-headline-56 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 3.89vw, 3.5rem);
+  font-weight: bold;
+}
+
+@utility text-headline-48 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.85rem, 3.33vw, 3rem);
+  @apply leading-10 lg:leading-16;
+  font-weight: bold;
+}
+
+@utility text-headline-40 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.25rem, 2.78vw, 2.5rem);
+  font-weight: bold;
+}
+
+@utility text-headline-32 {
+  font-family: var(--font-heading);
+  font-size: clamp(1rem, 2.22vw, 2rem);
+  font-weight: bold;
+}
+
+@utility text-headline-24 {
+  font-family: var(--font-heading);
+  font-size: clamp(0.875rem, 1.67vw, 1.5rem);
+  font-weight: bold;
+}
+
+@utility text-headline-20 {
+  font-family: var(--font-heading);
+  font-size: clamp(0.825rem, 1.38vw, 1.25rem);
+  font-weight: bold;
+}
+
+@utility text-body-18 {
+  font-family: var(--font-sans);
+  font-size: clamp(0.875rem, 1.25vw, 1.125rem);
+}
+
+@utility text-body-16 {
+  font-family: var(--font-sans);
+  font-size: clamp(0.875rem, 1.11vw, 1rem);
+}
+
+@utility text-body-14 {
+  font-family: var(--font-sans);
+  font-size: clamp(0.75rem, 0.97vw, 0.875rem);
+}
+
+@utility text-body-12 {
+  font-family: var(--font-sans);
+  font-size: clamp(0.625rem, 0.83vw, 0.75rem);
+}
+
+@utility text-body-10 {
+  font-family: var(--font-sans);
+  font-size: clamp(0.5rem, 0.69vw, 0.625rem);
+}
