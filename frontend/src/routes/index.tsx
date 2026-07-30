@@ -58,7 +58,7 @@ function Home() {
             <FadeTicker />
 
             <div className="font-heading uppercase text-background">
-              <h1 className="text-[clamp(2.65rem,5.75vw,8rem)] leading-25 max-lg:leading-12 tracking-wide">
+              <h1 className="text-[clamp(2.65rem,5.75vw,8rem)] leading-25 max-lg:leading-12 ">
                 Precisas de algo?
               </h1>
               <h1 className="flex gap-5 text-[clamp(2.45rem,5vw,7rem)] leading-25 max-lg:leading-12 max-lg:gap-3">
@@ -164,7 +164,7 @@ function Home() {
                   <h1 className="text-(--accent-900) text-6xl leading-snug">
                     {index + 1}
                   </h1>
-                  <h2 className="font-heading uppercase tracking-wide text-background text-headline-20 max-lg:text-headline-40">
+                  <h2 className="font-heading uppercase text-background text-headline-20 max-lg:text-headline-40">
                     {step.title}
                   </h2>
                   <p className="text-gray-800 text-body-16 max-lg:text-body-18">

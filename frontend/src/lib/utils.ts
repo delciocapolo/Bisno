@@ -19,3 +19,6 @@ export const getFirstAndLastName = (name?: string): string => {
 
   return `${parts[0]} ${parts[parts.length - 1]}`;
 };
+
+export const formatMobile = (num: string) =>
+  String(num).replace(/\B(?=(\d{3})+(?!\d))/g, " ");

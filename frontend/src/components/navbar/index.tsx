@@ -3,9 +3,9 @@ import LogoApp from "../logo";
 
 export default function Navbar() {
   return (
-    <header className="fixed top-0 left-0 z-999 w-full bg-background">
-      <nav className="">
-        <div className="max-w-[94%] py-4 mx-auto flex justify-between items-center">
+    <header className="h-(--header-height) fixed top-0 left-0 z-999 w-full bg-background">
+      <nav className="h-full">
+        <div className="h-full max-w-[94%] mx-auto flex justify-between items-center">
           <div className="">
             <LogoApp />
           </div>
@@ -33,5 +33,5 @@ export default function Navbar() {
 }
 
 export function NavbarHeightElement() {
-  return <div className="h-19" />;
+  return <div className="h-(--header-height)" />;
 }

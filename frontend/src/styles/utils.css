@@ -65,3 +65,10 @@
   box-shadow: 5px 5px 0 #17130d;
   border: 3px solid #17130d;
 }
+
+@utility text-stroke {
+  -webkit-text-stroke-width: 7px;
+  -webkit-text-stroke-color: #17130d;
+  -webkit-text-fill-color: currentColor;
+  paint-order: stroke fill;
+}
