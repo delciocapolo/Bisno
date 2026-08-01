@@ -164,7 +164,7 @@ export default function StepContact() {
           disabled={!(state.stepWhat?.serviceId && state.stepWhat?.zoneId)}
           onClick={() => changeStep(2)}
           className={cn(
-            "w-fit inline-flex items-center justify-center gap-2 uppercase text-headline-20 font-medium font-heading border-3 border-background text-background py-3 px-5",
+            "w-fit inline-flex items-center justify-center gap-2 uppercase text-headline-20 font-medium font-heading border-3 border-background text-background py-3 px-5 h-13.5",
             "disabled:bg-gray-300 disabled:text-gray-500",
           )}
         >
@@ -203,7 +203,7 @@ export default function StepContact() {
             });
           }}
           className={cn(
-            "w-fit inline-flex items-center justify-center gap-2 uppercase text-headline-20 font-medium font-heading bg-background text-foreground py-3 px-7 h-[54px]",
+            "w-fit inline-flex items-center justify-center gap-2 uppercase text-headline-20 font-medium font-heading bg-background text-foreground py-3 px-7 h-13.5",
             "disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed",
           )}
         >
