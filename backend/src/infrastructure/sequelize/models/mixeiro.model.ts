@@ -14,7 +14,7 @@ import { Zone } from "./zone.model.js";
 import { MixeiroHasSubscription } from "./mixeiro-has-subscription.model.js";
 
 interface MixeiroAttributes {
-  id: number;
+  id: string;
   zoneId: string;
   categoryId: string;
   customName: string;

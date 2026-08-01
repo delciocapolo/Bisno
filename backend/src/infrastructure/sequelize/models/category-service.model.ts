@@ -3,7 +3,7 @@ import { Table, Model, Column } from "sequelize-typescript";
 import { dbNameTables } from "@src/shared/constants/db-name-tables";
 
 interface CategoryServiceAttributes {
-  id: number;
+  id: string;
   name: string;
   slug: string;
   isActive: boolean;

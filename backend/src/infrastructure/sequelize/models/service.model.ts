@@ -10,7 +10,7 @@ import { dbNameTables } from "@src/shared/constants/db-name-tables";
 import { CategoryService } from "./category-service.model.js";
 
 interface ServiceAttributes {
-  id: number;
+  id: string;
   categoryId: string;
   name: string;
   slug: string;

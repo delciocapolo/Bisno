@@ -11,7 +11,7 @@ import { Subscription } from "./subscription.model.js";
 import { Mixeiro } from "./mixeiro.model.js";
 
 interface MixeiroHasSubscriptionAttributes {
-  id: number;
+  id: string;
   subscriptionId: string;
   mixeiroId: string;
   points: number;
