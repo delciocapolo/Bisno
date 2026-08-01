@@ -101,7 +101,7 @@ export default function StepWhat() {
           </h1>
         </div>
 
-        <nav className="grid grid-cols-4 gap-2">
+        <nav className="grid grid-cols-4 gap-2 max-lg:grid-cols-3">
           {categories?.map((category, index) => {
             const isActive = state.stepWhat?.serviceId === category?.id;
 
@@ -120,7 +120,7 @@ export default function StepWhat() {
                   icon={category?.icon}
                   className="text-background text-xl"
                 />
-                <span className="font-sans text-body-12 font-extrabold text-background uppercase">
+                <span className="font-sans text-body-12 font-extrabold text-background uppercase text-start">
                   {category?.name}
                 </span>
               </button>

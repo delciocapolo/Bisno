@@ -1,15 +1,13 @@
 import { Icon } from "@iconify/react";
 import { useSelector } from "@tanstack/react-store";
 import { useEffect } from "react";
-import { resetBisnoStore, store } from "../../store";
+import { changeStep, resetBisnoStore, store } from "../../store";
 import { useMutation } from "@tanstack/react-query";
 import { categoryService } from "@src/services/category/index.service";
 import { zoneService } from "@src/services/zones/index.service";
 import { defaultValue } from "@src/lib/utils";
-import { useNavigate } from "@tanstack/react-router";
 
 export default function DoneStep() {
-  const navigate = useNavigate();
   const state = useSelector(store, (state) => {
     const { step, ...rest } = state;
     return rest;
@@ -30,14 +28,14 @@ export default function DoneStep() {
 
   return (
     <div className="w-full flex items-center flex-col gap-7">
-      <div className="flex-center gap-1 pl-10 pr-5 py-5 border-5 border-red-700 w-fit animate-stampIn -rotate-3">
-        <h1 className="text-headline-48 text-red-700 uppercase tracking-wider">
+      <div className="flex-center gap-1 pl-10 pr-5 py-5 max-lg:pl-7 max-lg:py-3 max-lg:pr-3 border-5 border-red-700 w-fit animate-stampIn -rotate-3">
+        <h1 className="text-headline-48 max-lg:text-headline-40 text-red-700 uppercase tracking-wider">
           Bisno enviado
         </h1>
 
         <Icon
           icon={"material-symbols:done"}
-          className="text-red-700 text-6xl"
+          className="text-red-700 text-6xl max-lg:text-3xl"
         />
       </div>
 
@@ -56,7 +54,7 @@ export default function DoneStep() {
       <button
         onClick={() => {
           resetBisnoStore();
-          navigate({ to: "/bisno" });
+          changeStep(1);
         }}
         className="px-7 py-3 border-3 border-background hover:text-primary uppercase text-body-16 font-heading text-background"
       >
