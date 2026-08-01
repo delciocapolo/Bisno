@@ -121,3 +121,22 @@
     background: var(--background);
   }
 }
+
+@keyframes stampIn {
+  0% {
+    opacity: 0;
+    transform: scale(2) rotate(1deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.95) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(-3deg);
+  }
+}
+
+@theme {
+  --animate-stampIn: stampIn 0.5s ease-out both;
+}

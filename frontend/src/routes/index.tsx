@@ -9,6 +9,8 @@ import { cn, defaultValue } from "@src/lib/utils";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import Navbar from "@src/components/navbar";
 import Footer from "@src/components/footer";
+import { useQuery } from "@tanstack/react-query";
+import { categoryService } from "@src/services/category/index.service";
 
 export const Route = createFileRoute("/")({ component: Home });
 const STEPS = [
@@ -31,6 +33,13 @@ const STEPS = [
 
 function Home() {
   const [totaBisnosToday, setTotaBisnosToday] = useState<number>(0);
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const { data } = await categoryService.list({ pageSize: 12 });
+      return data;
+    },
+  });
 
   useEffect(() => {
     function getRandomInt(min: number, max: number) {
@@ -122,22 +131,22 @@ function Home() {
             </div>
 
             <ul className="grid grid-cols-6 gap-5 max-lg:grid-cols-2">
-              {Array.from({ length: 10 }).map((_, index) => (
+              {categories?.map((category, index) => (
                 <li key={index} className="inline-flex">
                   <Link
                     to="/"
                     className={cn(
-                      "inline-flex items-start justify-center flex-col gap-3 px-7 py-7 w-full",
                       "shadow-border-style",
+                      "inline-flex items-start justify-center flex-col gap-3 px-5 py-7 w-full",
                       "hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[7px_7px_0_#17130D] hover:no-underline",
                     )}
                   >
                     <Icon
-                      icon={"fa6-solid:screwdriver-wrench"}
+                      icon={category.icon}
                       className="text-[#C1121F] text-2xl"
                     />
                     <span className="font-sans text-body-14 font-extrabold text-background uppercase">
-                      Canalizador
+                      {category.name}
                     </span>
                   </Link>
                 </li>

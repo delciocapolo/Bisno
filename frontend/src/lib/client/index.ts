@@ -2,9 +2,8 @@ import axios from "axios";
 import { env } from "@src/env";
 import { getToken } from "./utils";
 
-const baseUrl = env.SERVER_URL;
 const client = axios.create({
-  baseURL: baseUrl,
+  baseURL: env.SERVER_URL,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",

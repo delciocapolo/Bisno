@@ -5,6 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { Toaster } from "sonner";
 
 type Theme = "light" | "dark" | "auto";
 
@@ -73,6 +74,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeContext.Provider value={{ theme, resolved, setTheme }}>
+      <Toaster />
       {children}
     </ThemeContext.Provider>
   );

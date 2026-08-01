@@ -5,6 +5,10 @@ import { createFormHook, createFormHookContexts } from "@tanstack/react-form";
 import { cn, formatMobile } from "@src/lib/utils";
 import { formCreateMixeiroSchema } from "@src/lib/schemas";
 import FloatingWhatsappButton from "@src/components/floating-whatsapp-button";
+import { useQuery } from "@tanstack/react-query";
+import { categoryService } from "@src/services/category/index.service";
+import { zoneService } from "@src/services/zones/index.service";
+import { channelService } from "@src/services/channels/index.service";
 
 export const Route = createFileRoute("/mixeiro/")({
   component: RouteComponent,
@@ -18,32 +22,32 @@ const { useAppForm } = createFormHook({
   formComponents: {},
 });
 
-const SERVICOS = [
-  "Canalizador",
-  "Electricista",
-  "Cozinheira",
-  "Motorista",
-  "Téc. Telemóveis",
-  "Cabeleireira",
-  "Pedreiro",
-  "Costureira",
-];
-
-const ZONAS = [
-  "Maianga",
-  "Rangel",
-  "Talatona",
-  "Ingombota",
-  "Cazenga",
-  "Viana",
-];
-
 const CANAIS = [
   { value: "whatsapp", label: "WhatsApp", icon: "ic:baseline-whatsapp" },
   { value: "mobile", label: "SMS", icon: "mdi:message-text-outline" },
 ] as const;
 
 function RouteComponent() {
+  const { data: categories } = useQuery({
+    queryKey: ["all-categories"],
+    queryFn: async () => {
+      const { data } = await categoryService.list();
+      return data;
+    },
+  });
+  const { data: zones } = useQuery({
+    queryKey: ["all-zones"],
+    queryFn: async () => {
+      const { data } = await zoneService.list();
+      return data;
+    },
+  });
+  const { data: channels } = useQuery({
+    queryKey: ["all-channels"],
+    queryFn: async () => {
+      return await channelService.list();
+    },
+  });
   const form = useAppForm({
     defaultValues: {
       customName: "",
@@ -214,7 +218,7 @@ function RouteComponent() {
 
               <form.Field name="hasWhatsapp">
                 {(field) => (
-                  <label className="flex w-fit cursor-pointer items-center gap-3">
+                  <label className="flex w-fit cursor-pointer items-center gap-3 select-none">
                     <button
                       type="button"
                       role="switch"
@@ -262,9 +266,9 @@ function RouteComponent() {
                         className="w-full border-2 border-background bg-foreground px-4 py-3 text-body-16 focus:outline-none text-background"
                       >
                         <option value="">Escolhe...</option>
-                        {SERVICOS.map((s) => (
-                          <option key={s} value={s}>
-                            {s}
+                        {categories?.map((category) => (
+                          <option key={category.id} value={category.id}>
+                            {category.name}
                           </option>
                         ))}
                       </select>
@@ -291,9 +295,9 @@ function RouteComponent() {
                         className="w-full border-2 border-background bg-foreground px-4 py-3 text-body-16 focus:outline-none text-background"
                       >
                         <option value="">Escolhe...</option>
-                        {ZONAS.map((z) => (
-                          <option key={z} value={z}>
-                            {z}
+                        {zones?.map((zone) => (
+                          <option key={zone.id} value={zone.id}>
+                            {zone.name}
                           </option>
                         ))}
                       </select>
@@ -309,13 +313,14 @@ function RouteComponent() {
                       Onde queres receber os bisnos?
                     </label>
                     <div className="grid grid-cols-2 divide-x-2 divide-background border-2 border-background">
-                      {CANAIS.map((opt) => {
-                        const active = field.state.value === opt.value;
+                      {channels?.map((channel) => {
+                        const active = field.state.value === channel.id;
+
                         return (
                           <button
-                            key={opt.value}
+                            key={channel.id}
                             type="button"
-                            onClick={() => field.handleChange(opt.value)}
+                            onClick={() => field.handleChange(channel.id)}
                             className={cn(
                               "flex items-center justify-center gap-2 py-3 font-bold text-body-14",
                               active
@@ -324,11 +329,11 @@ function RouteComponent() {
                             )}
                           >
                             <Icon
-                              icon={opt.icon}
+                              icon={channel.icon}
                               fontSize="1.25rem"
                               className={active ? "text-primary" : undefined}
                             />
-                            {opt.label}
+                            {channel.name}
                           </button>
                         );
                       })}
