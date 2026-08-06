@@ -100,7 +100,7 @@ export const zoneService = {
                 .toLowerCase()
                 .includes(filters?.zoneName?.toLowerCase() || ""),
             ).slice(0, filters?.pageSize),
-            message: "",
+            meta: { errors: null },
           });
         }, 500);
       });
@@ -116,7 +116,7 @@ export const zoneService = {
         setTimeout(() => {
           resolve({
             data: ZONES.find((zone) => zone.id === zoneId),
-            message: "",
+            meta: { errors: null },
           });
         }, 500);
       });

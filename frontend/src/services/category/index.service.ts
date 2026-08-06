@@ -107,7 +107,7 @@ export const categoryService = {
                 .toLowerCase()
                 .includes(filters?.categoryName?.toLowerCase() || ""),
             ).slice(0, filters?.pageSize),
-            message: "",
+            meta: { errors: null },
           });
         }, 500);
       });
@@ -126,7 +126,7 @@ export const categoryService = {
           setTimeout(() => {
             resolve({
               data: CATEGORIES.find((category) => category.id === categoryId),
-              message: "",
+              meta: { errors: null },
             });
           }, 500);
         },

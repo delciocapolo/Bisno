@@ -1,15 +1,19 @@
-type Nullable<T> = {
-  [K in keyof T]: T[K] | null;
-};
+export interface IApiResponseError {
+  field: PropertyKey | undefined;
+  error: string;
+}
 
 export type IApiResponse<T> = {
   data: T;
-  message: string | string[];
+  meta: {
+    errors: IApiResponseError[] | null;
+  };
 };
 
 export interface IApiPaginatedResponse<T> {
   data: Array<T>;
   meta: {
+    errors: IApiResponseError[] | null;
     pagination: {
       page: number;
       pageSize: number;

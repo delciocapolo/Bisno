@@ -9,12 +9,12 @@ export const bisnoService = {
         setTimeout(() => {
           resolve({
             data: payload,
-            message: "",
+            meta: { errors: null },
           });
         }, 500);
       });
       // const { data } = await client.post<IApiResponse<IBisno | null>>(
-      //   "/bisnos",
+      //   "/bisnos/create",
       // );
       // return data;
     } catch (error: any) {
