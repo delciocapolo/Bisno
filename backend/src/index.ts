@@ -5,7 +5,7 @@ import env from "./config/env";
 import rabbitConnection from "./infrastructure/rabbit/connection";
 import { server, serverLogger } from "./infrastructure/express/server";
 import "@infrastructure/socketio/server";
-import "@infrastructure/evolution-api/server";
+import "@src/infrastructure/evolution-api/server";
 import { registerConsumers } from "@src/infrastructure/rabbit/consumers/register-consumers";
 import { registerSchedulers } from "./application/jobs/scheduler";
 

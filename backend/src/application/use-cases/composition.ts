@@ -1,12 +1,12 @@
 import { SequelizeBisnoRepository } from "@src/infrastructure/sequelize/repositories/bisno.repository.impl.js";
-import { CreateBisnoUseCase } from "./bisnos/create-bisno.use-case.js";
+import { CreateBisnoUseCase } from "./bisno/create-bisno.use-case.js";
 import { SequelizeMixeiroRepository } from "@src/infrastructure/sequelize/repositories/mixeiro.repository.impl.js";
-import { CreateMixeiroUseCase } from "./mixeiros/create-mixeiro.use-case.js";
-import { ListMixeirosUseCase } from "./mixeiros/list-mixeiros.use-case.js";
-import { GetNextEligibleMixeiroUseCase } from "./mixeiros/get-next-eligible-mixeiro.use-case.js";
-import { GetBisnoUseCase } from "./bisnos/get-bisno.use-case.js";
+import { CreateMixeiroUseCase } from "./mixeiro/create-mixeiro.use-case.js";
+import { ListMixeirosUseCase } from "./mixeiro/list-mixeiros.use-case.js";
+import { GetNextEligibleMixeiroUseCase } from "./mixeiro/get-next-eligible-mixeiro.use-case.js";
+import { GetBisnoUseCase } from "./bisno/get-bisno.use-case.js";
 import { SequelizeMixeiroHasSubscriptionRepository } from "@src/infrastructure/sequelize/repositories/mixeiro-has-subscription.repository.impl.js";
-import { CreateMixeiroSubscriptionUseCase } from "./mixeiro-subscription/create-mixeiro-subscription.use-case.js";
+import { CreateMixeiroSubscriptionUseCase } from "./mixeiro-subscriptions/create-mixeiro-subscription.use-case.js";
 import { SequelizeServiceRepository } from "@src/infrastructure/sequelize/repositories/service.repository.impl.js";
 import { SequelizeLeadRepository } from "@src/infrastructure/sequelize/repositories/lead.repository.impl.js";
 import { CreateLeadUseCase } from "./lead/create-lead.use-case.js";
@@ -14,10 +14,11 @@ import { GetServiceUseCase } from "./service/get-service.use-case.js";
 import { GetLeadByIdUseCase } from "./lead/get-lead.use-case.js";
 import { ListExpiredLeadUseCase } from "./lead/list-expired-lead.use-case.js";
 import { GetLeadByBisnoIdUseCase } from "./lead/get-lead-by-bisno-id.use-case.js";
-import { GetMixeiroByIdUseCase } from "./mixeiros/get-mixeiro-by-id.use-case.js";
-import { GetSubscriptionByMixeiroIdUseCase } from "./mixeiro-subscription/get-subscription-by-mixeiro-id.use-case.js";
-import { DecrementSubscriptionPointUseCase } from "./mixeiro-subscription/decrement-subscription-point.use-case.js";
-import { GetMixeiroByUseCase } from "./mixeiros/get-mixeiro-by.use-case.js";
+import { GetMixeiroByIdUseCase } from "./mixeiro/get-mixeiro-by-id.use-case.js";
+import { GetSubscriptionByMixeiroIdUseCase } from "./mixeiro-subscriptions/get-subscription-by-mixeiro-id.use-case.js";
+import { DecrementSubscriptionPointUseCase } from "./mixeiro-subscriptions/decrement-subscription-point.use-case.js";
+import { GetMixeiroByUseCase } from "./mixeiro/get-mixeiro-by.use-case.js";
+import { ListServicesUseCase } from "./service/list-service.use-case.js";
 
 const bisnoRepository = new SequelizeBisnoRepository();
 const mixeiroRepository = new SequelizeMixeiroRepository();
@@ -61,6 +62,7 @@ const listExpiredLeadUseCase = new ListExpiredLeadUseCase(leadRepository);
 
 // Service
 const getServiceUseCase = new GetServiceUseCase(serviceRepository);
+const listServicesUseCase = new ListServicesUseCase(serviceRepository);
 
 export {
   createBisnoUseCase,
@@ -71,6 +73,7 @@ export {
   createMixeiroSubscriptionUseCase,
   createLeadUseCase,
   getServiceUseCase,
+  listServicesUseCase,
   getLeadByIdUseCase,
   getLeadByBisnoIdUseCase,
   listExpiredLeadUseCase,

@@ -10,6 +10,12 @@ export interface IEnvironment {
   SERVER_HOST: string;
   AUTHENTICATION_API_KEY: string;
 
+  // WAHA
+  WAHA_URL: string;
+  WAHA_API_KEY: string;
+
+  DEFAULT_SESSION_NAME: string;
+
   // rabbit
   RABBITMQ_URI: string;
 

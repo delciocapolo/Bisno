@@ -4,6 +4,7 @@ import { isDefined } from "@src/shared/utils/index";
 import { serverLogger } from "../../server";
 import { createMixeiroSubscriptionUseCase } from "@src/application/use-cases/composition";
 import { schemaFormCreateMixeiroSubscription } from "@src/shared/schemas/form-create-mixeiro-subscription";
+import { IApiResponse } from "@src/shared/@types/api-response";
 
 const mixeiroSubscriptionRoutes = Router();
 
@@ -28,8 +29,8 @@ const createMixeiroSubscriptionHandler = async (
 
     return res.status(201).json({
       data: mixeiroSubscription,
-      message: "Subscription created successfully",
-    });
+      meta: { errors: null },
+    } satisfies IApiResponse);
   } catch (error) {
     serverLogger.error(
       { error },
@@ -38,8 +39,15 @@ const createMixeiroSubscriptionHandler = async (
 
     return res.status(500).json({
       data: null,
-      message: "An unexpected error occurred while processing mixeiro list",
-    });
+      meta: {
+        errors: [
+          {
+            field: undefined,
+            error: "An unexpected error occurred while processing mixeiro list",
+          },
+        ],
+      },
+    } satisfies IApiResponse);
   }
 };
 

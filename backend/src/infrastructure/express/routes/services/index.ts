@@ -2,26 +2,24 @@ import z from "zod";
 import type express from "express";
 import { Router } from "express";
 import { serverLogger } from "../../server.js";
-import { schemaFormCreateBisno } from "@src/shared/schemas/form-create-bisno.js";
-import { publisher } from "@src/infrastructure/rabbit/adapters/amqp-event-publisher.js";
+import { Pagination } from "@src/shared/utils/pagination.js";
+import { Service } from "@src/infrastructure/sequelize/models/service.model.js";
+import { validatePaginationFilters } from "@src/shared/schemas/validate-pagination-filters.js";
 import { IApiResponse } from "@src/shared/@types/api-response.js";
 
-const bisnoRoutes = Router();
+const serviceRoutes = Router();
 
-const createBisnoHandler = async (
+const listServicesHandler = async (
   req: express.Request,
   res: express.Response,
 ) => {
   try {
-    const bisno = await schemaFormCreateBisno.parseAsync(req?.body || {});
-    serverLogger.info({ bisno }, "Received bisno data");
-    await publisher.publish({
-      routingKey: "bisno.order.created",
-      payload: bisno,
-    });
-    return res.status(201).json({
-      data: bisno,
-      meta: { errors: null },
+    const filters = await validatePaginationFilters.parseAsync(req.query || {});
+    const pagination = new Pagination(Service);
+    const { data, ...paginated } = await pagination.paginate(filters);
+    return res.status(200).json({
+      data: data,
+      meta: { errors: null, pagination: paginated },
     } satisfies IApiResponse);
   } catch (error) {
     serverLogger.error({ error }, "Error occurred while processing bisno data");
@@ -49,6 +47,6 @@ const createBisnoHandler = async (
   }
 };
 
-bisnoRoutes.post("/create", createBisnoHandler);
+serviceRoutes.get("/", listServicesHandler);
 
-export { bisnoRoutes };
+export { serviceRoutes };

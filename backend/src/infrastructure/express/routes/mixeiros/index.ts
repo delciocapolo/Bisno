@@ -9,6 +9,7 @@ import {
 } from "@src/application/use-cases/composition.js";
 import { schemaFormCreateMixeiro } from "@src/shared/schemas/form-create-mixeiro.js";
 import { getMixeiroVerifiedInformation } from "./utils.js";
+import { IApiResponse } from "@src/shared/@types/api-response.js";
 
 const mixeiroRoutes = Router();
 
@@ -45,8 +46,8 @@ const createMixeiroHandler = async (
 
     return res.status(201).json({
       data: mixeiro,
-      message: "Mixeiro created successfully",
-    });
+      meta: { errors: null },
+    } satisfies IApiResponse);
   } catch (error) {
     serverLogger.error(
       { error: (error as Error).message },
@@ -54,27 +55,36 @@ const createMixeiroHandler = async (
     );
 
     if (error instanceof z.ZodError) {
-      const erros = error.issues.map((issue) => ({
+      const errors = error.issues.map((issue) => ({
         field: issue?.path?.at(0),
         error: issue.message,
       }));
       return res.status(422).json({
         data: null,
-        message: erros,
-      });
+        meta: { errors: errors },
+      } satisfies IApiResponse);
     }
 
     if (error instanceof Error) {
       return res.status(400).json({
         data: null,
-        message: error.message,
-      });
+        meta: {
+          errors: [{ field: undefined, error: error.message }],
+        },
+      } satisfies IApiResponse);
     }
 
     return res.status(500).json({
       data: null,
-      message: "An unexpected error occurred while processing mixeiro data",
-    });
+      meta: {
+        errors: [
+          {
+            field: undefined,
+            error: "An unexpected error occurred while processing mixeiro data",
+          },
+        ],
+      },
+    } satisfies IApiResponse);
   }
 };
 
@@ -86,8 +96,8 @@ const getMixeirosHandler = async (
     const mixeiros = await listMixeirosUseCase.execute();
     return res.status(200).json({
       data: mixeiros,
-      message: "",
-    });
+      meta: { errors: null },
+    } satisfies IApiResponse);
   } catch (error) {
     serverLogger.error(
       { error },
@@ -96,8 +106,15 @@ const getMixeirosHandler = async (
 
     return res.status(500).json({
       data: null,
-      message: "An unexpected error occurred while processing mixeiro list",
-    });
+      meta: {
+        errors: [
+          {
+            field: undefined,
+            error: "An unexpected error occurred while processing mixeiro list",
+          },
+        ],
+      },
+    } satisfies IApiResponse);
   }
 };
 
